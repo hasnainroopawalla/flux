@@ -15,6 +15,7 @@ import { LayoutUtils } from "../layout.utils";
 import type { Camera } from "../../camera";
 import { EntityUtils } from "../../entities/utils";
 import { LayerType, type LayerArgs } from "../layout.interface";
+import { EntityCapability, hasCapability } from "../capabilities";
 
 export class SimulationLayer extends BaseLayer<LayerType.Simulation> {
 	private camera: Camera;
@@ -125,7 +126,7 @@ export class SimulationLayer extends BaseLayer<LayerType.Simulation> {
 			return true;
 		}
 
-		if (EntityUtils.isInputChip(hoveredEntity)) {
+		if (hasCapability(hoveredEntity, EntityCapability.Toggleable)) {
 			hoveredEntity.toggle();
 			return true;
 		}
@@ -141,11 +142,7 @@ export class SimulationLayer extends BaseLayer<LayerType.Simulation> {
 			return false;
 		}
 
-		if (
-			EntityUtils.isChip(hoveredEntity) &&
-			!EntityUtils.isIOChip(hoveredEntity)
-		) {
-			// TODO: consider moving to a dedicated tool to render ghost
+		if (hasCapability(hoveredEntity, EntityCapability.Draggable)) {
 			hoveredEntity.setPosition(mousePosition.world);
 			return true;
 		}
@@ -161,7 +158,7 @@ export class SimulationLayer extends BaseLayer<LayerType.Simulation> {
 			return false;
 		}
 
-		if (EntityUtils.isChip(hoveredEntity)) {
+		if (hasCapability(hoveredEntity, EntityCapability.SecondaryAction)) {
 			this.sim.emit("entity.secondaryAction", {
 				entityId: hoveredEntity.id,
 				chipType: hoveredEntity.chipType,
