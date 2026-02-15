@@ -31,14 +31,21 @@ enum State {
 	Preview,
 }
 
+const LayerPriority = {
+	[LayerType.Overlay]: 0,
+	[LayerType.Simulation]: 1,
+	[LayerType.Interaction]: 2,
+	[LayerType.Composite]: 3,
+};
+
 type StateArgs =
 	| {
 			kind: State.Workbench;
-			args: { compositeSelected: string };
+			args: { compositeSelected: string | null };
 	  }
 	| {
 			kind: State.Preview;
-			args: { exitPreview: boolean; cameraPosition: Position };
+			args: { shouldExitPreview: boolean; cameraPosition: Position };
 	  };
 
 export class LayoutManager {
@@ -53,7 +60,7 @@ export class LayoutManager {
 	constructor(args: LayoutManagerArgs) {
 		this.state = {
 			kind: State.Workbench,
-			args: { compositeSelected: "" },
+			args: { compositeSelected: null },
 		};
 		this.sim = args.sim;
 		this.camera = args.camera;
@@ -68,7 +75,7 @@ export class LayoutManager {
 				...args,
 				mousePositionService: args.mousePositionService,
 			}),
-			2,
+			LayerPriority[LayerType.Interaction],
 		);
 		this.layerStack.register(
 			LayerType.Simulation,
@@ -76,7 +83,7 @@ export class LayoutManager {
 				...args,
 				camera: args.camera,
 			}),
-			1,
+			LayerPriority[LayerType.Simulation],
 		);
 		this.layerStack.register(
 			LayerType.Overlay,
@@ -84,7 +91,7 @@ export class LayoutManager {
 				...args,
 				camera: args.camera,
 			}),
-			0,
+			LayerPriority[LayerType.Overlay],
 		);
 	}
 
@@ -152,7 +159,7 @@ export class LayoutManager {
 				break;
 			}
 			case State.Preview: {
-				if (this.state.args.exitPreview) {
+				if (this.state.args.shouldExitPreview) {
 					this.transitionToWorkbenchState(this.state.args.cameraPosition);
 				}
 				break;
@@ -173,7 +180,7 @@ export class LayoutManager {
 				case State.Preview:
 					{
 						if (LayerUtils.isCompositeLayer(layer)) {
-							this.state.args.exitPreview = layer.notifyManager();
+							this.state.args.shouldExitPreview = layer.notifyManager();
 						}
 					}
 					break;
@@ -191,7 +198,7 @@ export class LayoutManager {
 
 		this.state = {
 			kind: State.Workbench,
-			args: { compositeSelected: "" },
+			args: { compositeSelected: null },
 		};
 	}
 
@@ -206,13 +213,13 @@ export class LayoutManager {
 				camera: this.camera,
 				compositeId,
 			}),
-			4, // TODO: dont hardcode for multiple composite layers
+			LayerPriority[LayerType.Composite],
 		);
 
 		this.state = {
 			kind: State.Preview,
 			args: {
-				exitPreview: false,
+				shouldExitPreview: false,
 				cameraPosition: this.camera.getCameraPosition(),
 			},
 		};

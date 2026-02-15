@@ -24,7 +24,7 @@ export class CompositeLayer extends BaseLayer<LayerType.Composite> {
 	private camera: Camera;
 	private chipStack: string[];
 	private top: number;
-	private exitLayer: boolean;
+	private shouldExitLayer: boolean;
 
 	constructor(args: CompositeLayerArgs) {
 		super({
@@ -34,7 +34,7 @@ export class CompositeLayer extends BaseLayer<LayerType.Composite> {
 		this.camera = args.camera;
 		this.chipStack = [args.compositeId];
 		this.top = 0;
-		this.exitLayer = false;
+		this.shouldExitLayer = false;
 	}
 
 	public getRenderables(): Renderable[] {
@@ -87,7 +87,7 @@ export class CompositeLayer extends BaseLayer<LayerType.Composite> {
 					this.chipStack.pop();
 					--this.top;
 				} else {
-					this.exitLayer = true;
+					this.shouldExitLayer = true;
 				}
 				return true;
 			default:
@@ -106,7 +106,7 @@ export class CompositeLayer extends BaseLayer<LayerType.Composite> {
 	}
 
 	public notifyManager(): boolean {
-		return this.exitLayer;
+		return this.shouldExitLayer;
 	}
 
 	private handleRightMouseButtonClick(hoveredEntity: Entity | null): boolean {
