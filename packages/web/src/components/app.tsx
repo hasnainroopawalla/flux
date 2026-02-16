@@ -10,6 +10,16 @@ import { Popover } from "./popover";
 import { WebGpuErrorBanner } from "./webgpu-error-banner";
 import { Footer } from "./footer";
 import { SettingsProvider } from "../contexts/settings-context";
+import { RealtimeClient } from "../realtime-client";
+
+async function cc() {
+	const realtimeClient = new RealtimeClient("ws://localhost:8081");
+	await realtimeClient.connect();
+
+	realtimeClient.createRoom();
+}
+
+cc();
 
 const App: React.FC = () => {
 	const [simulatorApp, setSimulatorApp] = React.useState<SimulatorApp | null>(
