@@ -46,7 +46,12 @@ export class RoomManager {
 		room.clients.delete(client);
 	}
 
+	public getRoom(roomId: string): Room | undefined {
+		return this.rooms.get(roomId);
+	}
+
 	private generateRoomId(): string {
+		return "1";
 		return Math.random()
 			.toString(36)
 			.substring(2 /* skip `0.` */, 2 + config.roomIdLength);

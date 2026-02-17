@@ -1,25 +1,22 @@
 import * as React from "react";
 import { ParticipantRole, useRoom } from "../contexts/room-context";
-import { useRealtimeClient } from "../contexts/realtime-client-context";
 
 type MainMenuScreenProps = {
 	onNewRoomCreated: () => void;
+	onRoomJoined: () => void;
 	onLoadClick: () => void;
-	onJoinRoomClick: () => void;
 };
 
 export const MainMenuScreen: React.FC<MainMenuScreenProps> = ({
-	onJoinRoomClick,
-	onLoadClick,
 	onNewRoomCreated,
+	onRoomJoined,
+	onLoadClick,
 }) => {
-	const { setRoom } = useRoom();
-	const { realtimeClient } = useRealtimeClient();
+	const { setRoom, createRoom, joinRoom } = useRoom();
 
-	const onNewRoomClick = React.useCallback(async () => {
+	const createNewRoom = React.useCallback(async () => {
 		try {
-			await realtimeClient.ensureConnected();
-			const roomId = await realtimeClient.createRoom();
+			const roomId = await createRoom();
 
 			setRoom({
 				role: ParticipantRole.Host,
@@ -28,12 +25,26 @@ export const MainMenuScreen: React.FC<MainMenuScreenProps> = ({
 
 			onNewRoomCreated();
 		} catch (_) {}
-	}, [onNewRoomCreated, realtimeClient, setRoom]);
+	}, [onNewRoomCreated, setRoom, createRoom]);
+
+	const requestJoinRoom = React.useCallback(async () => {
+		try {
+			const roomId = "1";
+			await joinRoom(roomId);
+
+			setRoom({
+				role: ParticipantRole.Member,
+				roomId,
+			});
+
+			onRoomJoined();
+		} catch (_) {}
+	}, [onRoomJoined, setRoom, joinRoom]);
 
 	return (
 		<div className="flex flex-col gap-2">
-			<button onClick={onNewRoomClick}>New Room</button>
-			<button onClick={onJoinRoomClick}>Join Room</button>
+			<button onClick={createNewRoom}>New Room</button>
+			<button onClick={requestJoinRoom}>Join Room</button>
 			<button onClick={onLoadClick}>Load</button>
 		</div>
 	);

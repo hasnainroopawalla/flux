@@ -2,12 +2,18 @@ export enum WsClientCommandType {
 	JoinRoom = "JoinRoom",
 	CreateRoom = "CreateRoom",
 	LeaveRoom = "LeaveRoom",
+	SimAction = "SimAction",
 }
 
 export enum WsServerEventType {
 	RoomJoined = "RoomJoined",
 	RoomCreated = "RoomCreated",
 	LeftRoom = "LeftRoom",
+	SimAction = "SimAction",
+}
+
+export enum SimActionEventType {
+	ChipMove = "ChipMove",
 }
 
 export type WsClientCommand =
@@ -21,6 +27,11 @@ export type WsClientCommand =
 	| {
 			kind: WsClientCommandType.LeaveRoom;
 			roomId: string;
+	  }
+	| {
+			kind: WsClientCommandType.SimAction;
+			action: SimActionEventType;
+			roomId: string;
 	  };
 
 export type WsServerEvent =
@@ -33,6 +44,10 @@ export type WsServerEvent =
 	  }
 	| {
 			kind: WsServerEventType.LeftRoom;
+	  }
+	| {
+			kind: WsServerEventType.SimAction;
+			action: SimActionEventType;
 	  };
 
 export type WsEventOf<K extends WsServerEvent["kind"]> = Extract<

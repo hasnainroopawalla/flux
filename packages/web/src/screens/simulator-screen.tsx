@@ -12,6 +12,7 @@ import { WebGpuErrorBanner } from "../components/webgpu-error-banner";
 import { SettingsProvider } from "../contexts/settings-context";
 import { SimulatorAppProvider } from "../contexts/simulator-app-context";
 import { useStateRef } from "../utils";
+import { MultiplayerBridge } from "../components/multiplayer-bridge";
 
 export const SimulatorScreen: React.FC = () => {
 	const [simulatorApp, setSimulatorApp] = React.useState<SimulatorApp | null>(
@@ -41,6 +42,7 @@ export const SimulatorScreen: React.FC = () => {
 			{simulatorApp && (
 				<SimulatorAppProvider simulatorApp={simulatorApp}>
 					<SettingsProvider>
+						<MultiplayerBridge />
 						<Toolbar />
 						<SimulatorOverlayView />
 						<Dialog />

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { RoomService } from "../services/room-service";
+import { useRealtimeClient } from "./realtime-client-context";
 
 export enum ParticipantRole {
 	Host = "Host",
@@ -13,18 +15,42 @@ type Room = {
 type RoomContextValue = {
 	room: Room | null;
 	setRoom: (room: Room) => void;
+	createRoom: () => Promise<string>;
+	joinRoom: (roomId: string) => void;
 };
 
-const RoomContext = React.createContext<RoomContextValue>({
-	room: null,
-	setRoom: () => {},
-});
+const RoomContext = React.createContext<RoomContextValue>(
+	{} as RoomContextValue,
+);
 
 export const RoomProvider = ({ children }: React.PropsWithChildren) => {
 	const [room, setRoom] = React.useState<Room | null>(null);
 
+	const { realtimeClient } = useRealtimeClient();
+
+	const roomService = React.useMemo(() => {
+		return new RoomService(realtimeClient);
+	}, [realtimeClient]);
+
+	const createRoom = React.useCallback(
+		() => roomService.createRoom(),
+		[roomService],
+	);
+
+	const joinRoom = React.useCallback(
+		(roomId: string) => roomService.joinRoom(roomId),
+		[roomService],
+	);
+
 	return (
-		<RoomContext.Provider value={{ room, setRoom }}>
+		<RoomContext.Provider
+			value={{
+				room,
+				setRoom,
+				createRoom,
+				joinRoom,
+			}}
+		>
 			{children}
 		</RoomContext.Provider>
 	);

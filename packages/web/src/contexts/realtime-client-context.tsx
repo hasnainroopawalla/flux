@@ -1,29 +1,37 @@
 import * as React from "react";
-import { RealtimeClient } from "../realtime-client";
-import { config } from "../config";
+import { RealtimeClient } from "../services/realtime-client";
 
-type RealtimeContextValue = {
+type RealtimeClientContextValue = {
 	realtimeClient: RealtimeClient;
 };
 
-const RealtimeContext = React.createContext<RealtimeContextValue>(
-	{} as RealtimeContextValue,
+type RealtimeClientProviderProps = {
+	socketUrl: string;
+};
+
+const RealtimeClientContext = React.createContext<RealtimeClientContextValue>(
+	{} as RealtimeClientContextValue,
 );
 
 export const RealtimeClientProvider = ({
 	children,
-}: React.PropsWithChildren) => {
+	socketUrl,
+}: React.PropsWithChildren<RealtimeClientProviderProps>) => {
 	const realtimeClient = React.useMemo(
-		() => new RealtimeClient(config.realtimeClientSocketUrl),
-		[],
+		() => new RealtimeClient(socketUrl),
+		[socketUrl],
 	);
 
 	return (
-		<RealtimeContext.Provider value={{ realtimeClient }}>
+		<RealtimeClientContext.Provider
+			value={{
+				realtimeClient,
+			}}
+		>
 			{children}
-		</RealtimeContext.Provider>
+		</RealtimeClientContext.Provider>
 	);
 };
 
-export const useRealtimeClient = (): RealtimeContextValue =>
-	React.useContext(RealtimeContext);
+export const useRealtimeClient = (): RealtimeClientContextValue =>
+	React.useContext(RealtimeClientContext);

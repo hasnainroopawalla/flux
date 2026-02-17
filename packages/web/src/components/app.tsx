@@ -6,6 +6,7 @@ import { SimulatorScreen } from "../screens/simulator-screen";
 import { RoomIndicator } from "./room-indicator";
 import { RoomProvider } from "../contexts/room-context";
 import { RealtimeClientProvider } from "../contexts/realtime-client-context";
+import { config } from "../config";
 
 enum ScreenType {
 	MainMenu,
@@ -15,13 +16,17 @@ enum ScreenType {
 const App: React.FC = () => {
 	const [screen, setScreen] = React.useState<ScreenType>(ScreenType.MainMenu);
 
+	const transitionToSimulatorScreen = React.useCallback(() => {
+		setScreen(ScreenType.Simulator);
+	}, []);
+
 	switch (screen) {
 		case ScreenType.MainMenu:
 			return (
 				<MainMenuScreen
-					onNewRoomCreated={() => setScreen(ScreenType.Simulator)}
+					onNewRoomCreated={transitionToSimulatorScreen}
+					onRoomJoined={transitionToSimulatorScreen}
 					onLoadClick={() => {}}
-					onJoinRoomClick={() => {}}
 				/>
 			);
 		case ScreenType.Simulator:
@@ -32,7 +37,7 @@ const App: React.FC = () => {
 export const ContextualApp: React.FC = () => {
 	return (
 		<DialogProvider>
-			<RealtimeClientProvider>
+			<RealtimeClientProvider socketUrl={config.realtimeClientSocketUrl}>
 				<RoomProvider>
 					<App />
 					<Footer />

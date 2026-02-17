@@ -3,6 +3,7 @@ import { RoomManager } from "./room-manager";
 import {
 	type WsClientCommand,
 	type WsServerEvent,
+	type SimActionEventType,
 	WsClientCommandType,
 	WsServerEventType,
 } from "@digital-logic-sim/shared-types";
@@ -29,6 +30,7 @@ class RealtimeServer {
 	public onNewConnection(socket: WebSocket): void {
 		socket.on("message", (raw) => {
 			const clientCommand: WsClientCommand = JSON.parse(raw.toString());
+			console.log("New clientCommand", clientCommand);
 
 			switch (clientCommand.kind) {
 				case WsClientCommandType.CreateRoom:
@@ -39,6 +41,9 @@ class RealtimeServer {
 					break;
 				case WsClientCommandType.LeaveRoom:
 					this.onLeaveRoom(clientCommand.roomId, socket);
+					break;
+				case WsClientCommandType.SimAction:
+					this.onSimAction(clientCommand.roomId, clientCommand.action);
 					break;
 				default:
 					break;
@@ -62,6 +67,21 @@ class RealtimeServer {
 	private onLeaveRoom(roomId: string, socket: WebSocket): void {
 		roomManager.leaveRoom(roomId, socket);
 		this.sendServerEvent(socket, { kind: WsServerEventType.LeftRoom });
+	}
+
+	private onSimAction(roomId: string, action: SimActionEventType): void {
+		const room = roomManager.getRoom(roomId);
+		if (!room) {
+			throw new Error("Sim action triggered on non-existent room");
+		}
+
+		// broadcast to all clients in the room
+		room.clients.forEach((client) => {
+			this.sendServerEvent(client, {
+				kind: WsServerEventType.SimAction,
+				action,
+			});
+		});
 	}
 
 	private sendServerEvent(socket: WebSocket, serverEvent: WsServerEvent): void {
