@@ -1,5 +1,9 @@
 import type { WebSocket } from "ws";
 
+const config = {
+	roomIdLength: 4,
+};
+
 type Room = {
 	clients: Set<WebSocket>;
 };
@@ -43,6 +47,8 @@ export class RoomManager {
 	}
 
 	private generateRoomId(): string {
-		return this.rooms.size.toString();
+		return Math.random()
+			.toString(36)
+			.substring(2 /* skip `0.` */, 2 + config.roomIdLength);
 	}
 }

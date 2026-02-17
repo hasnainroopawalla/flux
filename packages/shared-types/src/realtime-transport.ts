@@ -34,3 +34,8 @@ export type WsServerEvent =
 	| {
 			kind: WsServerEventType.LeftRoom;
 	  };
+
+export type WsEventOf<K extends WsServerEvent["kind"]> = Extract<
+	WsServerEvent,
+	{ kind: K }
+>;

@@ -1,6 +1,11 @@
 import { WebSocketServer, type WebSocket, type Server } from "ws";
 import { RoomManager } from "./room-manager";
-import { WsClientCommand, WsClientCommandType, WsServerEvent, WsServerEventType } from "@digital-logic-sim/shared-types";
+import {
+	type WsClientCommand,
+	type WsServerEvent,
+	WsClientCommandType,
+	WsServerEventType,
+} from "@digital-logic-sim/shared-types";
 
 const WS_PORT = 8081;
 
@@ -14,8 +19,6 @@ class RealtimeServer {
 			port,
 		});
 
-		console.log("WebSocket server running on ws://localhost:8081");
-
 		this.server.on("connection", (socket) => this.onNewConnection(socket));
 	}
 
@@ -24,12 +27,8 @@ class RealtimeServer {
 	}
 
 	public onNewConnection(socket: WebSocket): void {
-		console.log("Client connected");
-
 		socket.on("message", (raw) => {
 			const clientCommand: WsClientCommand = JSON.parse(raw.toString());
-
-			console.log("Received message:", clientCommand);
 
 			switch (clientCommand.kind) {
 				case WsClientCommandType.CreateRoom:
@@ -49,7 +48,10 @@ class RealtimeServer {
 
 	private onCreateRoom(socket: WebSocket): void {
 		const roomId = roomManager.createRoom(socket);
-		this.sendServerEvent(socket, { kind: WsServerEventType.RoomCreated, roomId });
+		this.sendServerEvent(socket, {
+			kind: WsServerEventType.RoomCreated,
+			roomId,
+		});
 	}
 
 	private onJoinRoom(roomId: string, socket: WebSocket): void {

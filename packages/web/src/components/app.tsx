@@ -1,70 +1,44 @@
 import * as React from "react";
-import { SimulatorCanvas, SimulatorOverlayView } from "./simulator-canvas";
-import { Toolbar } from "./toolbar";
-import { StartSimulatorAction } from "./start-simulator-action";
-import type { SimulatorApp } from "@digital-logic-sim/simulator";
-import { SimulatorAppProvider } from "../contexts/simulator-app-context";
-import { useStateRef } from "../utils";
-import { Dialog, DialogProvider } from "./dialog";
-import { Popover } from "./popover";
-import { WebGpuErrorBanner } from "./webgpu-error-banner";
+import { DialogProvider } from "./dialog";
 import { Footer } from "./footer";
-import { SettingsProvider } from "../contexts/settings-context";
-import { RealtimeClient } from "../realtime-client";
+import { MainMenuScreen } from "../screens/main-menu-screen";
+import { SimulatorScreen } from "../screens/simulator-screen";
+import { RoomIndicator } from "./room-indicator";
+import { RoomProvider } from "../contexts/room-context";
+import { RealtimeClientProvider } from "../contexts/realtime-client-context";
 
-async function cc() {
-	const realtimeClient = new RealtimeClient("ws://localhost:8081");
-	await realtimeClient.connect();
-
-	realtimeClient.createRoom();
+enum ScreenType {
+	MainMenu,
+	Simulator,
 }
 
-cc();
-
 const App: React.FC = () => {
-	const [simulatorApp, setSimulatorApp] = React.useState<SimulatorApp | null>(
-		null,
-	);
+	const [screen, setScreen] = React.useState<ScreenType>(ScreenType.MainMenu);
 
-	const [canvas, setCanvas, canvasRef] = useStateRef<HTMLCanvasElement | null>(
-		null,
-	);
-
-	const [startSimError, setStartSimError] = React.useState<boolean>(false);
-
-	return startSimError ? (
-		<WebGpuErrorBanner />
-	) : (
-		<>
-			<SimulatorCanvas canvasRef={canvasRef} onCanvasReady={setCanvas} />
-
-			{canvas && !simulatorApp && (
-				<StartSimulatorAction
-					canvas={canvas}
-					onSimulatorAppStartSuccess={setSimulatorApp}
-					onSimulatorAppStartFailure={() => setStartSimError(true)}
+	switch (screen) {
+		case ScreenType.MainMenu:
+			return (
+				<MainMenuScreen
+					onNewRoomCreated={() => setScreen(ScreenType.Simulator)}
+					onLoadClick={() => {}}
+					onJoinRoomClick={() => {}}
 				/>
-			)}
-
-			{simulatorApp && (
-				<SimulatorAppProvider simulatorApp={simulatorApp}>
-					<SettingsProvider>
-						<Toolbar />
-						<SimulatorOverlayView />
-						<Dialog />
-						<Popover />
-					</SettingsProvider>
-				</SimulatorAppProvider>
-			)}
-		</>
-	);
+			);
+		case ScreenType.Simulator:
+			return <SimulatorScreen />;
+	}
 };
 
 export const ContextualApp: React.FC = () => {
 	return (
 		<DialogProvider>
-			<App />
-			<Footer />
+			<RealtimeClientProvider>
+				<RoomProvider>
+					<App />
+					<Footer />
+					<RoomIndicator />
+				</RoomProvider>
+			</RealtimeClientProvider>
 		</DialogProvider>
 	);
 };
