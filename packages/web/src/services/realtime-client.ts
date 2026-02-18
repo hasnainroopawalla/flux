@@ -2,7 +2,7 @@ import type {
 	WsClientCommand,
 	WsServerEvent,
 	WsEventOf,
-} from "@digital-logic-sim/shared-types";
+} from "@flux/shared-types";
 
 type SubscriptionCallback = (event: WsServerEvent) => void;
 

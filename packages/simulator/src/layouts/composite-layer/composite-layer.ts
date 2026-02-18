@@ -1,9 +1,6 @@
 import { BaseLayer } from "../base-layer";
 import type { Camera } from "../../camera";
-import {
-	RenderableType,
-	type Renderable,
-} from "@digital-logic-sim/render-engine";
+import { RenderableType, type Renderable } from "@flux/render-engine";
 import { LayoutUtils } from "../layout.utils";
 import type { Entity } from "../../entities/entity";
 import type { MousePosition } from "../../types";

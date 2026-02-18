@@ -1,4 +1,4 @@
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import type { ChipType } from "../../entities/chips";
 import type { Pin, PinType } from "../../entities/pin";
 import type { ChipDefinition } from "../chip-library-service";

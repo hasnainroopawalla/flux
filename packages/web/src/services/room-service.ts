@@ -1,7 +1,4 @@
-import {
-	WsClientCommandType,
-	WsServerEventType,
-} from "@digital-logic-sim/shared-types";
+import { WsClientCommandType, WsServerEventType } from "@flux/shared-types";
 import type { RealtimeClient } from "./realtime-client";
 
 export class RoomService {
@@ -29,7 +26,7 @@ export class RoomService {
 		});
 	}
 
-	public async joinRoom(roomId: string): Promise<void> {
+	public async joinRoom(roomId: string): Promise<string> {
 		await this.realtimeClient.ensureConnected();
 
 		return new Promise((resolve) => {
@@ -40,9 +37,9 @@ export class RoomService {
 
 			const unsubscribe = this.realtimeClient.on(
 				WsServerEventType.RoomJoined,
-				() => {
+				({ roomId }) => {
 					unsubscribe();
-					resolve();
+					resolve(roomId);
 				},
 			);
 		});

@@ -3,7 +3,7 @@ import {
 	type Renderable,
 	type PinRenderable,
 	RenderableType,
-} from "@digital-logic-sim/render-engine";
+} from "@flux/render-engine";
 import { Tool, type ToolArgs } from "./tool";
 import {
 	ChipType,

@@ -1,4 +1,4 @@
-import type { SimulatorApp } from "@digital-logic-sim/simulator";
+import type { SimulatorApp } from "@flux/simulator";
 import React from "react";
 import { Dialog } from "../components/dialog";
 import { Popover } from "../components/popover";

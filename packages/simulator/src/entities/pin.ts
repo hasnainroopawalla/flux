@@ -1,4 +1,4 @@
-import type { Position, ColorRGBA } from "@digital-logic-sim/shared-types";
+import type { Position, ColorRGBA } from "@flux/shared-types";
 import type { Chip } from "./chips";
 import { BaseEntity, EntityType } from "./entity";
 

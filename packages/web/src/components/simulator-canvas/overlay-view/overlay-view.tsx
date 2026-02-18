@@ -4,10 +4,7 @@ import { useEffectOnce } from "../../../utils";
 import { useOverlayLabels } from "../hooks";
 import { ChipName } from "./chip-name";
 import { PinName } from "./pin-name";
-import {
-	EntityType,
-	type OverlayLabelData,
-} from "@digital-logic-sim/simulator";
+import { EntityType, type OverlayLabelData } from "@flux/simulator";
 
 export const SimulatorOverlayView: React.FC = () => {
 	const labels = useOverlayLabels();

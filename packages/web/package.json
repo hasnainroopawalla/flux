@@ -1,5 +1,5 @@
 {
-  "name": "@digital-logic-sim/web",
+  "name": "@flux/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,8 +10,8 @@
     "test": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@digital-logic-sim/shared-types": "workspace:^1.0.0",
-    "@digital-logic-sim/simulator": "workspace:^1.0.0",
+    "@flux/shared-types": "workspace:^1.0.0",
+    "@flux/simulator": "workspace:^1.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.16",

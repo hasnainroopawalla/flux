@@ -41,6 +41,7 @@ export type WsServerEvent =
 	  }
 	| {
 			kind: WsServerEventType.RoomJoined;
+			roomId: string;
 	  }
 	| {
 			kind: WsServerEventType.LeftRoom;

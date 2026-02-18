@@ -2,7 +2,7 @@ import type { PinSpec } from "../pin";
 import type { AtomicChip } from "./atomic-chip";
 import type { InputChip, OutputChip } from "./io-chip";
 import type { CompositeChip } from "./composite-chip";
-import type { ColorRGBA, Position } from "@digital-logic-sim/shared-types";
+import type { ColorRGBA, Position } from "@flux/shared-types";
 import type { CompositeDefinition } from "../../services/blueprint-service";
 
 export enum AtomicChipType {

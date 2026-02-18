@@ -16,7 +16,7 @@ type RoomContextValue = {
 	room: Room | null;
 	setRoom: (room: Room) => void;
 	createRoom: () => Promise<string>;
-	joinRoom: (roomId: string) => void;
+	joinRoom: (roomId: string) => Promise<string>;
 };
 
 const RoomContext = React.createContext<RoomContextValue>(

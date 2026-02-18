@@ -4,7 +4,7 @@ import {
 	SimActionEventType,
 	WsClientCommandType,
 	WsServerEventType,
-} from "@digital-logic-sim/shared-types";
+} from "@flux/shared-types";
 import { useSimulatorApp } from "../contexts/simulator-app-context";
 import { useRoom } from "../contexts/room-context";
 

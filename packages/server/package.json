@@ -1,5 +1,5 @@
 {
-  "name": "@digital-logic-sim/server",
+  "name": "@flux/server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.20.0",
   "dependencies": {
-    "@digital-logic-sim/shared-types": "workspace:^1.0.0",
+    "@flux/shared-types": "workspace:^1.0.0",
     "ws": "^8.19.0"
   },
   "devDependencies": {

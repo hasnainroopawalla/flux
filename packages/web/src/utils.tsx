@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 
 export const useEffectOnce = (callback: () => () => void, predicate = true) => {
 	const hasRun = React.useRef(false);

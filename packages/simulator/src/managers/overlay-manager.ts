@@ -1,10 +1,10 @@
-import type { Position, RectDimension } from "@digital-logic-sim/shared-types";
+import type { Position, RectDimension } from "@flux/shared-types";
 import type { Camera } from "../camera";
 import { type Entity, EntityType } from "../entities/entity";
 import type { Simulator } from "../simulator";
 import { BaseManager } from "./base-manager";
 import { MeshUtils } from "../mesh-utils";
-import { renderEngineConfig } from "@digital-logic-sim/render-engine";
+import { renderEngineConfig } from "@flux/render-engine";
 import { EntityUtils } from "../entities/utils";
 import { ChipLabelUtils, ChipType } from "../entities/chips";
 import { PinType } from "../entities/pin";

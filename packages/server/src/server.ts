@@ -6,7 +6,7 @@ import {
 	type SimActionEventType,
 	WsClientCommandType,
 	WsServerEventType,
-} from "@digital-logic-sim/shared-types";
+} from "@flux/shared-types";
 
 const WS_PORT = 8081;
 
@@ -30,7 +30,6 @@ class RealtimeServer {
 	public onNewConnection(socket: WebSocket): void {
 		socket.on("message", (raw) => {
 			const clientCommand: WsClientCommand = JSON.parse(raw.toString());
-			console.log("New clientCommand", clientCommand);
 
 			switch (clientCommand.kind) {
 				case WsClientCommandType.CreateRoom:
@@ -61,7 +60,10 @@ class RealtimeServer {
 
 	private onJoinRoom(roomId: string, socket: WebSocket): void {
 		roomManager.joinRoom(roomId, socket);
-		this.sendServerEvent(socket, { kind: WsServerEventType.RoomJoined });
+		this.sendServerEvent(socket, {
+			kind: WsServerEventType.RoomJoined,
+			roomId,
+		});
 	}
 
 	private onLeaveRoom(roomId: string, socket: WebSocket): void {

@@ -26,7 +26,7 @@ export class RoomManager {
 		this.rooms.delete(roomId);
 	}
 
-	public joinRoom(roomId: string, client: WebSocket): void {
+	public joinRoom(roomId: string, client: WebSocket): string {
 		const room = this.rooms.get(roomId);
 
 		if (!room) {
@@ -34,6 +34,8 @@ export class RoomManager {
 		}
 
 		room.clients.add(client);
+
+		return roomId;
 	}
 
 	public leaveRoom(roomId: string, client: WebSocket): void {

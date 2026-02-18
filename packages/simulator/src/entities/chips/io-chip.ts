@@ -1,4 +1,4 @@
-import type { ColorRGBA } from "@digital-logic-sim/shared-types";
+import type { ColorRGBA } from "@flux/shared-types";
 import type { Pin } from "../pin";
 import { BaseChip } from "./chip";
 import {

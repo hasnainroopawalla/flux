@@ -1,7 +1,7 @@
 import { COLORS } from "../../services/color-service";
 import { type ChipLayout, ChipLayoutFactory } from "./chip-layout-factory";
 import type { ChipInitParams, ChipRenderState } from "./chip.interface";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import type { ChipMetadata } from "./chip.utils";
 
 export type GhostChipSpec = ChipMetadata;

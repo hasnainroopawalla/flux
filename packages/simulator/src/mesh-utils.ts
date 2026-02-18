@@ -1,8 +1,8 @@
-import { renderEngineConfig } from "@digital-logic-sim/render-engine";
+import { renderEngineConfig } from "@flux/render-engine";
 import type { Entity } from "./entities/entity";
 import { ChipUtils, type Chip } from "./entities/chips";
 import type { Pin } from "./entities/pin";
-import type { Position, RectDimension } from "@digital-logic-sim/shared-types";
+import type { Position, RectDimension } from "@flux/shared-types";
 
 export const MeshUtils = {
 	getHoveredChipEntity: (

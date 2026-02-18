@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSimulatorApp } from "../../contexts/simulator-app-context";
-import type { OverlayLabelData } from "@digital-logic-sim/simulator";
+import type { OverlayLabelData } from "@flux/simulator";
 
 export const useOverlayLabels = () => {
 	const simulatorApp = useSimulatorApp();

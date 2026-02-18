@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { SimulatorApp } from "@digital-logic-sim/simulator";
+import { SimulatorApp } from "@flux/simulator";
 import { useEffectOnce } from "../utils";
 
 type StartSimulatorActionProps = {

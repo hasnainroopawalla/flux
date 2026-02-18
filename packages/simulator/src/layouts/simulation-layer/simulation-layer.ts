@@ -1,7 +1,4 @@
-import {
-	RenderableType,
-	type Renderable,
-} from "@digital-logic-sim/render-engine";
+import { RenderableType, type Renderable } from "@flux/render-engine";
 import { BaseLayer } from "../base-layer";
 import {
 	ButtonEvent,

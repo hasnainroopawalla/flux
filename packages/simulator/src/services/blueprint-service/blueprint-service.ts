@@ -17,7 +17,7 @@ import type { Wire } from "../../entities/wire";
 import type { Simulator } from "../../simulator";
 import { BaseService } from "../base-service";
 import { InvalidWireConnectionError } from "../../errors";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { round2 } from "../../utils";
 
 export class BlueprintService extends BaseService {

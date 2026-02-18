@@ -1,4 +1,4 @@
-import { RenderEngine } from "@digital-logic-sim/render-engine";
+import { RenderEngine } from "@flux/render-engine";
 import { Simulator } from "./simulator";
 import { Clock } from "./clock";
 import { Camera } from "./camera";
