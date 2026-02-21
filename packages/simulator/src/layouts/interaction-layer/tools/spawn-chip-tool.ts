@@ -26,7 +26,6 @@ import { BlueprintUtils } from "../../../services/blueprint-service";
 import { COLORS } from "../../../services/color-service";
 import { LayoutUtils } from "../../layout.utils";
 import { SimActionType } from "@flux/shared-types";
-import { SimEventSource } from "../../../services/eventing-service";
 import { entityIdService } from "../../../entity-id-service";
 
 type SpawnChipToolArgs = ToolArgs & {
