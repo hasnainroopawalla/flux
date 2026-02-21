@@ -7,6 +7,7 @@ import {
 	WsClientCommandType,
 	WsServerEventType,
 } from "@flux/shared-types";
+import type { SimCommand } from "@flux/shared-types/src/realtime-transport";
 
 const WS_PORT = 8081;
 
@@ -29,25 +30,40 @@ class RealtimeServer {
 
 	public onNewConnection(socket: WebSocket): void {
 		socket.on("message", (raw) => {
-			const clientCommand: WsClientCommand = JSON.parse(raw.toString());
-
-			switch (clientCommand.kind) {
-				case WsClientCommandType.CreateRoom:
-					this.onCreateRoom(socket);
-					break;
-				case WsClientCommandType.JoinRoom:
-					this.onJoinRoom(clientCommand.roomId, socket);
-					break;
-				case WsClientCommandType.LeaveRoom:
-					this.onLeaveRoom(clientCommand.roomId, socket);
-					break;
-				case WsClientCommandType.SimAction:
-					this.onSimAction(clientCommand.roomId, clientCommand.action);
-					break;
-				default:
-					break;
+			try {
+				const clientCommand = JSON.parse(raw.toString()) as WsClientCommand;
+				this.handleClientCommand(clientCommand, socket);
+			} catch (error) {
+				this.onClientMessageError(error);
 			}
 		});
+	}
+
+	private handleClientCommand(
+		clientCommand: WsClientCommand,
+		socket: WebSocket,
+	): void {
+		switch (clientCommand.kind) {
+			case WsClientCommandType.CreateRoom:
+				this.onCreateRoom(socket);
+				break;
+			case WsClientCommandType.JoinRoom:
+				this.onJoinRoom(clientCommand.roomId, socket);
+				break;
+			case WsClientCommandType.LeaveRoom:
+				this.onLeaveRoom(clientCommand.roomId, socket);
+				break;
+			case WsClientCommandType.SimCommand:
+				this.onSimAction(clientCommand.roomId, clientCommand.command, socket);
+				break;
+			default:
+				break;
+		}
+	}
+
+	private onClientMessageError(error: unknown): void {
+		const message = error instanceof Error ? error.message : "Unknown error";
+		console.warn("Failed to process client message:", message);
 	}
 
 	private onCreateRoom(socket: WebSocket): void {
@@ -71,19 +87,31 @@ class RealtimeServer {
 		this.sendServerEvent(socket, { kind: WsServerEventType.LeftRoom });
 	}
 
-	private onSimAction(roomId: string, action: SimActionEventType): void {
+	private onSimAction(
+		roomId: string,
+		command: SimCommand,
+		sender: WebSocket,
+	): void {
 		const room = roomManager.getRoom(roomId);
 		if (!room) {
 			throw new Error("Sim action triggered on non-existent room");
 		}
 
-		// broadcast to all clients in the room
-		room.clients.forEach((client) => {
+		// broadcast to all clients in the room except the sender
+		for (const client of room.clients) {
+			if (client === sender) {
+				continue;
+			}
 			this.sendServerEvent(client, {
-				kind: WsServerEventType.SimAction,
-				action,
+				kind: WsServerEventType.SimEvent,
+				event: {
+					action: command.action,
+					chipDefinition: command.chipDefinition,
+					position: command.position,
+					chipId: "command.chipId",
+				},
 			});
-		});
+		}
 	}
 
 	private sendServerEvent(socket: WebSocket, serverEvent: WsServerEvent): void {

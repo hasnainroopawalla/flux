@@ -1,20 +1,35 @@
+import type { Position } from "./shared-types";
+
 export enum WsClientCommandType {
 	JoinRoom = "JoinRoom",
 	CreateRoom = "CreateRoom",
 	LeaveRoom = "LeaveRoom",
-	SimAction = "SimAction",
+	SimCommand = "SimCommand",
 }
 
 export enum WsServerEventType {
 	RoomJoined = "RoomJoined",
 	RoomCreated = "RoomCreated",
 	LeftRoom = "LeftRoom",
-	SimAction = "SimAction",
+	SimEvent = "SimEvent",
 }
 
 export enum SimActionEventType {
-	ChipMove = "ChipMove",
+	ChipSpawn = "ChipSpawn",
 }
+
+export type SimCommand = {
+	action: SimActionEventType.ChipSpawn;
+	chipDefinition: string;
+	position: Position;
+};
+
+export type SimEvent = {
+	action: SimActionEventType.ChipSpawn;
+	chipDefinition: string;
+	position: Position;
+	chipId: string;
+};
 
 export type WsClientCommand =
 	| {
@@ -29,9 +44,9 @@ export type WsClientCommand =
 			roomId: string;
 	  }
 	| {
-			kind: WsClientCommandType.SimAction;
-			action: SimActionEventType;
+			kind: WsClientCommandType.SimCommand;
 			roomId: string;
+			command: SimCommand;
 	  };
 
 export type WsServerEvent =
@@ -47,8 +62,8 @@ export type WsServerEvent =
 			kind: WsServerEventType.LeftRoom;
 	  }
 	| {
-			kind: WsServerEventType.SimAction;
-			action: SimActionEventType;
+			kind: WsServerEventType.SimEvent;
+			event: SimEvent;
 	  };
 
 export type WsEventOf<K extends WsServerEvent["kind"]> = Extract<

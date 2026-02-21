@@ -30,6 +30,7 @@ export type ChipRenderState = ChipInitParams & {
 
 export type EntitySpawnOptions = {
 	parentCompositeId?: string;
+	remoteChipId?: string;
 };
 
 export type ChipInitParams = {
