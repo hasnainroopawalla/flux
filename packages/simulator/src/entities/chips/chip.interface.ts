@@ -24,7 +24,7 @@ export enum IOChipType {
 }
 export type IOChip = InputChip | OutputChip;
 
-export type ChipRenderState = ChipInitParams & {
+export type ChipRenderState = Omit<ChipInitParams, "chipId"> & {
 	color: ColorRGBA;
 };
 

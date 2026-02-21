@@ -10,6 +10,7 @@ export class GhostChip {
 	public spec: GhostChipSpec;
 	public layout: ChipLayout;
 	public renderState: ChipRenderState;
+	public id: string;
 
 	constructor(spec: GhostChipSpec, chipInitParams: ChipInitParams) {
 		this.renderState = {
@@ -17,6 +18,7 @@ export class GhostChip {
 			position: chipInitParams.position,
 		};
 		this.spec = spec;
+		this.id = chipInitParams.chipId;
 
 		this.layout = new ChipLayoutFactory(this.renderState, this.spec);
 	}

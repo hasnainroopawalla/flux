@@ -21,7 +21,7 @@ export enum SimActionType {
 	// Ghost
 	GhostChipSpawn = "GhostChipSpawn",
 	GhostChipMove = "GhostChipMove",
-	GhostChipEnd = "GhostChipEnd",
+	GhostChipDestroy = "GhostChipDestroy",
 }
 
 export type SimAction =
@@ -33,12 +33,18 @@ export type SimAction =
 	  }
 	| {
 			kind: SimActionType.GhostChipSpawn;
+			ghostChipId: string;
+			position: Position;
+			chipDefinition: ChipDefinition;
 	  }
 	| {
 			kind: SimActionType.GhostChipMove;
+			ghostChipId: string;
+			position: Position;
 	  }
 	| {
-			kind: SimActionType.GhostChipEnd;
+			kind: SimActionType.GhostChipDestroy;
+			ghostChipId: string;
 	  };
 
 export type WsClientCommand =

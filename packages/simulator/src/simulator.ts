@@ -2,6 +2,7 @@
 import { ChipManager } from "./managers/chip-manager/chip-manager";
 import { WireManager } from "./managers/wire-manager";
 import { PinManager } from "./managers/pin-manager";
+import { GhostChipManager } from "./managers/ghost-chip-manager";
 
 // services
 import { ChipLibraryService } from "./services/chip-library-service";
@@ -29,6 +30,7 @@ export class Simulator {
 	public chipManager: ChipManager;
 	public pinManager: PinManager;
 	public wireManager: WireManager;
+	public ghostChipManager: GhostChipManager;
 
 	constructor() {
 		// services
@@ -40,6 +42,7 @@ export class Simulator {
 		this.wireManager = new WireManager(this);
 		this.chipManager = new ChipManager(this);
 		this.pinManager = new PinManager(this);
+		this.ghostChipManager = new GhostChipManager(this);
 	}
 
 	public on<K extends keyof IEvents>(
@@ -83,11 +86,26 @@ export class Simulator {
 
 	private applyAction(action: SimAction, source: SimEventSource) {
 		switch (action.kind) {
-			case SimActionType.ChipSpawn:
+			case SimActionType.ChipSpawn: {
 				this.chipManager.spawnChip(action.chipDefinition, {
 					chipId: action.chipId,
 					position: action.position,
 				});
+				break;
+			}
+			case SimActionType.GhostChipSpawn: {
+				this.ghostChipManager.createChip(
+					action.ghostChipId,
+					action.chipDefinition,
+					action.position,
+				);
+				break;
+			}
+			case SimActionType.GhostChipMove:
+				this.ghostChipManager.moveChip(action.ghostChipId, action.position);
+				break;
+			case SimActionType.GhostChipDestroy:
+				this.ghostChipManager.destroyChip(action.ghostChipId);
 				break;
 		}
 		this.emit("sim.action", { action, source });

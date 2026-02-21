@@ -78,6 +78,7 @@ export class ChipManager extends BaseManager {
 	): ChipFromDefinition<T> {
 		const chipFactory =
 			this.sim.chipLibraryService.getChipFactory(chipDefinition);
+
 		const chip = this.createChip(chipFactory, chipInitParams, opts);
 
 		chip.setId(chipInitParams.chipId);

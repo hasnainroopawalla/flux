@@ -1,15 +1,5 @@
-import {
-	type ChipRenderable,
-	type Renderable,
-	type PinRenderable,
-	RenderableType,
-} from "@flux/render-engine";
+import type { Renderable } from "@flux/render-engine";
 import { Tool, type ToolArgs } from "./tool";
-import {
-	ChipType,
-	GhostChip,
-	type GhostChipSpec,
-} from "../../../entities/chips";
 import {
 	ButtonEvent,
 	type KeyboardButtonType,
@@ -17,14 +7,7 @@ import {
 } from "../../../managers/input-manager";
 import type { MousePosition } from "../../../types";
 import type { Entity } from "../../../entities/entity";
-import { PinType } from "../../../entities/pin";
-import {
-	ChipLibraryUtils,
-	type ChipDefinition,
-} from "../../../services/chip-library-service";
-import { BlueprintUtils } from "../../../services/blueprint-service";
-import { COLORS } from "../../../services/color-service";
-import { LayoutUtils } from "../../layout.utils";
+import type { ChipDefinition } from "../../../services/chip-library-service";
 import { SimActionType } from "@flux/shared-types";
 import { entityIdService } from "../../../entity-id-service";
 
@@ -35,25 +18,25 @@ type SpawnChipToolArgs = ToolArgs & {
 export class SpawnChipTool extends Tool {
 	private chipDefinition: ChipDefinition;
 
-	private ghostChip: GhostChip;
+	private ghostChipId: string;
 
 	constructor(args: SpawnChipToolArgs) {
 		super(args);
 
 		this.chipDefinition = args.chipDefinition;
 
-		this.ghostChip = new GhostChip(this.getGhostChipSpec(this.chipDefinition), {
-			chipId: "0",
+		this.ghostChipId = this.generateGhostId();
+
+		this.sim.applyLocalAction({
+			kind: SimActionType.GhostChipSpawn,
+			ghostChipId: this.ghostChipId,
+			chipDefinition: args.chipDefinition,
 			position: args.mousePositionService.getMousePosition().world,
 		});
 	}
 
 	public getRenderables(): Renderable[] {
-		if (!this.ghostChip) {
-			return [];
-		}
-
-		return [this.createGhostChipRenderable()];
+		return [];
 	}
 
 	public onMouseButtonEvent(
@@ -77,7 +60,17 @@ export class SpawnChipTool extends Tool {
 		mousePosition: MousePosition,
 		_hoveredEntity: Entity | null,
 	): void {
-		this.ghostChip.setPosition(mousePosition.world);
+		const ghostChip = this.sim.ghostChipManager.getChip(this.ghostChipId);
+
+		if (!ghostChip) {
+			return;
+		}
+
+		this.sim.applyLocalAction({
+			kind: SimActionType.GhostChipMove,
+			ghostChipId: this.ghostChipId,
+			position: mousePosition.world,
+		});
 	}
 
 	public onKeyboardEvent(
@@ -91,64 +84,31 @@ export class SpawnChipTool extends Tool {
 		}
 	}
 
-	private createGhostChipRenderable(): ChipRenderable {
-		const createPinRenderable = (
-			numPins: number,
-			pinType: PinType,
-		): PinRenderable[] =>
-			Array.from({ length: numPins }, (_, pinIdx) => ({
-				type: RenderableType.Pin,
-				value: false,
-				position: this.ghostChip.layout.getPinPosition(pinIdx, pinType),
-				color: COLORS.Ghost,
-			}));
-
-		return {
-			type: RenderableType.Chip,
-			chipRenderableType: LayoutUtils.getChipRenderableType(
-				this.chipDefinition.kind,
-			),
-			color: this.ghostChip.renderState.color,
-			position: this.ghostChip.renderState.position,
-			dimensions: this.ghostChip.layout.dimensions,
-			inputPins: createPinRenderable(
-				this.ghostChip.spec.numInputPins,
-				PinType.In,
-			),
-			outputPins: createPinRenderable(
-				this.ghostChip.spec.numOutputPins,
-				PinType.Out,
-			),
-		};
-	}
-
 	private handleLeftMouseButtonClick(): void {
+		const ghostChip = this.sim.ghostChipManager.getChip(this.ghostChipId);
+
+		if (!ghostChip) {
+			return;
+		}
+
 		this.sim.applyLocalAction({
 			kind: SimActionType.ChipSpawn,
 			chipDefinition: this.chipDefinition,
 			chipId: entityIdService.generateId(),
-			position: this.ghostChip.renderState.position,
+			position: ghostChip.renderState.position,
+		});
+
+		this.sim.applyLocalAction({
+			kind: SimActionType.GhostChipDestroy,
+			ghostChipId: ghostChip.id,
 		});
 
 		this.deactivate();
 	}
 
-	private getGhostChipSpec(chipDefinition: ChipDefinition): GhostChipSpec {
-		const chipFactory =
-			this.sim.chipLibraryService.getChipFactory(chipDefinition);
-
-		const chipSpec = ChipLibraryUtils.getChipSpec(chipFactory);
-
-		const { inputPins, outputPins } =
-			chipSpec.chipType === ChipType.Composite
-				? BlueprintUtils.getIOPinSpecs(chipSpec.definition)
-				: chipSpec;
-
-		return {
-			name: chipSpec.name,
-			chipType: chipSpec.chipType,
-			numInputPins: inputPins.length,
-			numOutputPins: outputPins.length,
-		};
+	private generateGhostId(): string {
+		// return `${this.userId}:${entityIdService.generateId()}`;
+		// TODO: use userId
+		return `ghost:${entityIdService.generateId()}`;
 	}
 }

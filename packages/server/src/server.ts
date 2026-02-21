@@ -28,6 +28,7 @@ class RealtimeServer {
 	}
 
 	public onNewConnection(socket: WebSocket): void {
+		// TODO: generate userId here
 		socket.on("message", (raw) => {
 			try {
 				const clientCommand = JSON.parse(raw.toString()) as WsClientCommand;

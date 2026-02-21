@@ -25,13 +25,6 @@ class EntityIdService {
 	): string {
 		return `${chipId}.${pinType}.${chipPinIndex}`;
 	}
-
-	public parsePinId(
-		pinId: string,
-	): [chipId: string, pinType: PinType, chipPinId: string] {
-		const [chipId, pinType, chipPinId] = pinId.split(".");
-		return [chipId, pinType as PinType, chipPinId];
-	}
 }
 
 // Export a singleton instance of the service
