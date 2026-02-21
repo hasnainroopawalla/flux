@@ -7,12 +7,12 @@ import {
 	CompositeChip,
 	ChipType,
 } from "../../entities/chips";
-import { entityIdService } from "../../entity-id-service";
 import type {
 	AtomicChipFactory,
 	IOChipFactory,
 } from "../../services/chip-library-service/builtin-registry";
 import type {
+	ChipDefinition,
 	ChipFactory,
 	ChipFromFactory,
 	CompositeChipFactory,
@@ -22,6 +22,7 @@ import { didAnyChange } from "../../utils";
 import { BaseManager } from "../base-manager";
 import { CompositeChipSpawner } from "./composite-chip-spawner";
 import { EntityUtils } from "../../entities/utils";
+import type { ChipFromDefinition } from "../../services/chip-library-service/chip-library.utils";
 
 export class ChipManager extends BaseManager {
 	private chips: Chip[];
@@ -70,15 +71,16 @@ export class ChipManager extends BaseManager {
 		this.chips = [];
 	}
 
-	public spawnChip<T extends ChipFactory>(
-		chipFactory: T,
-		chipInitParams: Pick<ChipInitParams, "position">,
+	public spawnChip<T extends ChipDefinition>(
+		chipDefinition: T,
+		chipInitParams: ChipInitParams,
 		opts?: EntitySpawnOptions,
-	): ChipFromFactory<T> {
+	): ChipFromDefinition<T> {
+		const chipFactory =
+			this.sim.chipLibraryService.getChipFactory(chipDefinition);
 		const chip = this.createChip(chipFactory, chipInitParams, opts);
 
-		const chipId = entityIdService.generateId();
-		chip.setId(chipId);
+		chip.setId(chipInitParams.chipId);
 
 		this.spawnPinsForChip(chip);
 

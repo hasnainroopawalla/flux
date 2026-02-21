@@ -8,9 +8,12 @@ import { ChipLibraryService } from "./services/chip-library-service";
 import { BlueprintService } from "./services/blueprint-service";
 import {
 	EventingService,
+	SimEventSource,
 	type IEvents,
 	type Unsubscribe,
 } from "./services/eventing-service";
+
+import { SimActionType, type SimAction } from "@flux/shared-types";
 
 const simulatorConfig = {
 	maxIterations: 1000,
@@ -50,6 +53,14 @@ export class Simulator {
 		this.eventingService.publish(event, data);
 	}
 
+	public applyLocalAction(action: SimAction) {
+		this.applyAction(action, SimEventSource.Local);
+	}
+
+	public applyRemoteAction(action: SimAction) {
+		this.applyAction(action, SimEventSource.Remote);
+	}
+
 	public update(): void {
 		const state = {
 			shouldRunLoop: true,
@@ -68,5 +79,17 @@ export class Simulator {
 
 			state.shouldRunLoop = chipsChanged || wiresChanged || pinsChanged;
 		}
+	}
+
+	private applyAction(action: SimAction, source: SimEventSource) {
+		switch (action.kind) {
+			case SimActionType.ChipSpawn:
+				this.chipManager.spawnChip(action.chipDefinition, {
+					chipId: action.chipId,
+					position: action.position,
+				});
+				break;
+		}
+		this.emit("sim.action", { action, source });
 	}
 }

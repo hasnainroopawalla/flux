@@ -20,27 +20,31 @@ import type { Entity } from "../../../entities/entity";
 import { PinType } from "../../../entities/pin";
 import {
 	ChipLibraryUtils,
-	type ChipFactory,
+	type ChipDefinition,
 } from "../../../services/chip-library-service";
 import { BlueprintUtils } from "../../../services/blueprint-service";
 import { COLORS } from "../../../services/color-service";
 import { LayoutUtils } from "../../layout.utils";
+import { SimActionType } from "@flux/shared-types";
+import { SimEventSource } from "../../../services/eventing-service";
+import { entityIdService } from "../../../entity-id-service";
 
 type SpawnChipToolArgs = ToolArgs & {
-	chipFactory: ChipFactory;
+	chipDefinition: ChipDefinition;
 };
 
 export class SpawnChipTool extends Tool {
-	private chipFactory: ChipFactory;
+	private chipDefinition: ChipDefinition;
 
 	private ghostChip: GhostChip;
 
 	constructor(args: SpawnChipToolArgs) {
 		super(args);
 
-		this.chipFactory = args.chipFactory;
+		this.chipDefinition = args.chipDefinition;
 
-		this.ghostChip = new GhostChip(this.getGhostChipSpec(args.chipFactory), {
+		this.ghostChip = new GhostChip(this.getGhostChipSpec(this.chipDefinition), {
+			chipId: "0",
 			position: args.mousePositionService.getMousePosition().world,
 		});
 	}
@@ -103,7 +107,7 @@ export class SpawnChipTool extends Tool {
 		return {
 			type: RenderableType.Chip,
 			chipRenderableType: LayoutUtils.getChipRenderableType(
-				this.chipFactory.kind,
+				this.chipDefinition.kind,
 			),
 			color: this.ghostChip.renderState.color,
 			position: this.ghostChip.renderState.position,
@@ -120,17 +124,20 @@ export class SpawnChipTool extends Tool {
 	}
 
 	private handleLeftMouseButtonClick(): void {
-		this.sim.chipManager.spawnChip(
-			this.chipFactory,
-			{
-				position: this.ghostChip.renderState.position,
-			} /* init params */,
-		);
+		this.sim.applyLocalAction({
+			kind: SimActionType.ChipSpawn,
+			chipDefinition: this.chipDefinition,
+			chipId: entityIdService.generateId(),
+			position: this.ghostChip.renderState.position,
+		});
 
 		this.deactivate();
 	}
 
-	private getGhostChipSpec(chipFactory: ChipFactory): GhostChipSpec {
+	private getGhostChipSpec(chipDefinition: ChipDefinition): GhostChipSpec {
+		const chipFactory =
+			this.sim.chipLibraryService.getChipFactory(chipDefinition);
+
 		const chipSpec = ChipLibraryUtils.getChipSpec(chipFactory);
 
 		const { inputPins, outputPins } =

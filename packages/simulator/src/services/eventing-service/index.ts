@@ -4,3 +4,4 @@ export type {
 	IChipSpawnFinishEvent,
 	IEntitySecondaryActionEvent,
 } from "./events";
+export { SimEventSource } from "./events";

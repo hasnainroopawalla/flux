@@ -3,11 +3,10 @@ import { RoomManager } from "./room-manager";
 import {
 	type WsClientCommand,
 	type WsServerEvent,
-	type SimActionEventType,
+	type SimAction,
 	WsClientCommandType,
 	WsServerEventType,
 } from "@flux/shared-types";
-import type { SimCommand } from "@flux/shared-types/src/realtime-transport";
 
 const WS_PORT = 8081;
 
@@ -53,8 +52,8 @@ class RealtimeServer {
 			case WsClientCommandType.LeaveRoom:
 				this.onLeaveRoom(clientCommand.roomId, socket);
 				break;
-			case WsClientCommandType.SimCommand:
-				this.onSimAction(clientCommand.roomId, clientCommand.command, socket);
+			case WsClientCommandType.SimAction:
+				this.onSimAction(clientCommand.roomId, clientCommand.action, socket);
 				break;
 			default:
 				break;
@@ -89,9 +88,10 @@ class RealtimeServer {
 
 	private onSimAction(
 		roomId: string,
-		command: SimCommand,
+		action: SimAction,
 		sender: WebSocket,
 	): void {
+		console.log("Received SimAction", action);
 		const room = roomManager.getRoom(roomId);
 		if (!room) {
 			throw new Error("Sim action triggered on non-existent room");
@@ -102,14 +102,10 @@ class RealtimeServer {
 			if (client === sender) {
 				continue;
 			}
+
 			this.sendServerEvent(client, {
-				kind: WsServerEventType.SimEvent,
-				event: {
-					action: command.action,
-					chipDefinition: command.chipDefinition,
-					position: command.position,
-					chipId: "command.chipId",
-				},
+				kind: WsServerEventType.SimAction,
+				action,
 			});
 		}
 	}

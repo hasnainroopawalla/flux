@@ -1,35 +1,45 @@
-import type { Position } from "./shared-types";
+import type { Position } from "./common.interface";
+import type { ChipDefinition } from "../../simulator"; // TODO: fix import
 
 export enum WsClientCommandType {
 	JoinRoom = "JoinRoom",
 	CreateRoom = "CreateRoom",
 	LeaveRoom = "LeaveRoom",
-	SimCommand = "SimCommand",
+	SimAction = "SimAction",
 }
 
 export enum WsServerEventType {
 	RoomJoined = "RoomJoined",
 	RoomCreated = "RoomCreated",
 	LeftRoom = "LeftRoom",
-	SimEvent = "SimEvent",
+	SimAction = "SimAction",
 }
 
-export enum SimActionEventType {
+export enum SimActionType {
 	ChipSpawn = "ChipSpawn",
+
+	// Ghost
+	GhostChipSpawn = "GhostChipSpawn",
+	GhostChipMove = "GhostChipMove",
+	GhostChipEnd = "GhostChipEnd",
 }
 
-export type SimCommand = {
-	action: SimActionEventType.ChipSpawn;
-	chipDefinition: string;
-	position: Position;
-};
-
-export type SimEvent = {
-	action: SimActionEventType.ChipSpawn;
-	chipDefinition: string;
-	position: Position;
-	chipId: string;
-};
+export type SimAction =
+	| {
+			kind: SimActionType.ChipSpawn;
+			chipDefinition: ChipDefinition;
+			chipId: string;
+			position: Position;
+	  }
+	| {
+			kind: SimActionType.GhostChipSpawn;
+	  }
+	| {
+			kind: SimActionType.GhostChipMove;
+	  }
+	| {
+			kind: SimActionType.GhostChipEnd;
+	  };
 
 export type WsClientCommand =
 	| {
@@ -44,9 +54,9 @@ export type WsClientCommand =
 			roomId: string;
 	  }
 	| {
-			kind: WsClientCommandType.SimCommand;
+			kind: WsClientCommandType.SimAction;
 			roomId: string;
-			command: SimCommand;
+			action: SimAction;
 	  };
 
 export type WsServerEvent =
@@ -62,8 +72,8 @@ export type WsServerEvent =
 			kind: WsServerEventType.LeftRoom;
 	  }
 	| {
-			kind: WsServerEventType.SimEvent;
-			event: SimEvent;
+			kind: WsServerEventType.SimAction;
+			action: SimAction;
 	  };
 
 export type WsEventOf<K extends WsServerEvent["kind"]> = Extract<
