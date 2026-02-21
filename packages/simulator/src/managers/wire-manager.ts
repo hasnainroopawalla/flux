@@ -5,7 +5,6 @@ import {
 	type WireInitParams,
 	type WireConnection,
 } from "../entities/wire";
-import { entityIdService } from "../entity-id-service";
 import { InvalidWireConnectionError } from "../errors";
 import type { Simulator } from "../simulator";
 import { didAnyChange } from "../utils";
@@ -63,7 +62,7 @@ export class WireManager extends BaseManager {
 			opts,
 		});
 
-		const wireId = entityIdService.generateId();
+		const wireId = this.sim.entityIdService.generateId();
 		wire.setId(wireId);
 
 		this.wires.push(wire);

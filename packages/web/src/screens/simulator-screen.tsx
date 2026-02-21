@@ -13,6 +13,7 @@ import { SettingsProvider } from "../contexts/settings-context";
 import { SimulatorAppProvider } from "../contexts/simulator-app-context";
 import { useStateRef } from "../utils";
 import { MultiplayerBridge } from "../components/multiplayer-bridge";
+import { useRealtimeClient } from "../contexts/realtime-client-context";
 
 export const SimulatorScreen: React.FC = () => {
 	const [simulatorApp, setSimulatorApp] = React.useState<SimulatorApp | null>(
@@ -25,15 +26,18 @@ export const SimulatorScreen: React.FC = () => {
 
 	const [startSimError, setStartSimError] = React.useState<boolean>(false);
 
+	const { realtimeClient } = useRealtimeClient();
+
 	return startSimError ? (
 		<WebGpuErrorBanner />
 	) : (
 		<>
 			<SimulatorCanvas canvasRef={canvasRef} onCanvasReady={setCanvas} />
 
-			{canvas && !simulatorApp && (
+			{canvas && !simulatorApp && realtimeClient.sessionId && (
 				<StartSimulatorAction
 					canvas={canvas}
+					sessionId={realtimeClient.sessionId}
 					onSimulatorAppStartSuccess={setSimulatorApp}
 					onSimulatorAppStartFailure={() => setStartSimError(true)}
 				/>

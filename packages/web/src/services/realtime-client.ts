@@ -1,17 +1,21 @@
-import type {
-	WsClientCommand,
-	WsServerEvent,
-	WsEventOf,
+import {
+	type WsClientCommand,
+	type WsServerEvent,
+	type WsEventOf,
+	WsServerEventType,
 } from "@flux/shared-types";
 
 type SubscriptionCallback = (event: WsServerEvent) => void;
 
 export class RealtimeClient {
+	public sessionId: string | undefined;
+
 	private socketUrl: string;
-	private ws!: WebSocket;
 	private isConnected = false;
 
 	private subscriptions: Map<WsServerEvent["kind"], Set<SubscriptionCallback>>;
+
+	private ws!: WebSocket;
 
 	constructor(socketUrl: string) {
 		this.socketUrl = socketUrl;
@@ -64,19 +68,22 @@ export class RealtimeClient {
 				this.isConnected = true;
 
 				this.ws.onmessage = (event) => {
-					this.handleNewMessage(event);
-				};
+					const data: WsServerEvent = JSON.parse(event.data);
 
-				resolve();
+					if (data.kind === WsServerEventType.Welcome) {
+						this.sessionId = data.sessionId;
+						resolve();
+					}
+
+					this.handleNewMessage(data);
+				};
 			};
 
 			this.ws.onerror = (err) => reject(err);
 		});
 	}
 
-	private handleNewMessage(event: MessageEvent): void {
-		const data: WsServerEvent = JSON.parse(event.data);
-
+	private handleNewMessage(data: WsServerEvent): void {
 		this.subscriptions.get(data.kind)?.forEach((callback) => {
 			callback(data);
 		});

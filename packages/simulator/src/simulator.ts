@@ -15,6 +15,7 @@ import {
 } from "./services/eventing-service";
 
 import { SimActionType, type SimAction } from "@flux/shared-types";
+import { EntityIdService } from "./services/entity-id-service";
 
 const simulatorConfig = {
 	maxIterations: 1000,
@@ -25,6 +26,7 @@ export class Simulator {
 	public eventingService: EventingService;
 	public chipLibraryService: ChipLibraryService;
 	public blueprintService: BlueprintService;
+	public entityIdService: EntityIdService;
 
 	// managers
 	public chipManager: ChipManager;
@@ -32,11 +34,12 @@ export class Simulator {
 	public wireManager: WireManager;
 	public ghostChipManager: GhostChipManager;
 
-	constructor() {
+	constructor(sessionId: string) {
 		// services
 		this.eventingService = new EventingService();
 		this.chipLibraryService = new ChipLibraryService();
 		this.blueprintService = new BlueprintService(this);
+		this.entityIdService = new EntityIdService(sessionId);
 
 		// managers
 		this.wireManager = new WireManager(this);

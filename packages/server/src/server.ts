@@ -7,10 +7,13 @@ import {
 	WsClientCommandType,
 	WsServerEventType,
 } from "@flux/shared-types";
+import { SessionManager } from "./session-manager";
 
 const WS_PORT = 8081;
 
 const roomManager = new RoomManager();
+
+const sessionManager = new SessionManager();
 
 class RealtimeServer {
 	private server: Server;
@@ -28,7 +31,13 @@ class RealtimeServer {
 	}
 
 	public onNewConnection(socket: WebSocket): void {
-		// TODO: generate userId here
+		const session = sessionManager.create(socket);
+
+		this.sendServerEvent(socket, {
+			kind: WsServerEventType.Welcome,
+			sessionId: session.id,
+		});
+
 		socket.on("message", (raw) => {
 			try {
 				const clientCommand = JSON.parse(raw.toString()) as WsClientCommand;
@@ -36,6 +45,11 @@ class RealtimeServer {
 			} catch (error) {
 				this.onClientMessageError(error);
 			}
+		});
+
+		socket.on("close", () => {
+			sessionManager.destroy(session.id);
+			socket.close();
 		});
 	}
 

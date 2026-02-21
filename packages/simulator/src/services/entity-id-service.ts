@@ -1,11 +1,13 @@
-import type { PinType } from "./entities/pin";
+import type { PinType } from "../entities/pin";
 
 const ENTITY_ID_START_INDEX = -1;
 
-class EntityIdService {
+export class EntityIdService {
+	private sessionId: string;
 	current: number;
 
-	constructor() {
+	constructor(sessionId: string) {
+		this.sessionId = sessionId;
 		this.current = ENTITY_ID_START_INDEX;
 	}
 
@@ -15,7 +17,7 @@ class EntityIdService {
 
 	public generateId(): string {
 		this.current += 1;
-		return this.current.toString();
+		return `${this.sessionId}:${this.current.toString()}`;
 	}
 
 	public generatePinId(
@@ -26,6 +28,3 @@ class EntityIdService {
 		return `${chipId}.${pinType}.${chipPinIndex}`;
 	}
 }
-
-// Export a singleton instance of the service
-export const entityIdService = new EntityIdService();

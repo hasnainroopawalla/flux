@@ -9,6 +9,8 @@ export enum WsClientCommandType {
 }
 
 export enum WsServerEventType {
+	Welcome = "Welcome",
+
 	RoomJoined = "RoomJoined",
 	RoomCreated = "RoomCreated",
 	LeftRoom = "LeftRoom",
@@ -66,6 +68,10 @@ export type WsClientCommand =
 	  };
 
 export type WsServerEvent =
+	| {
+			kind: WsServerEventType.Welcome;
+			sessionId: string;
+	  }
 	| {
 			kind: WsServerEventType.RoomCreated;
 			roomId: string;

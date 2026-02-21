@@ -9,7 +9,6 @@ import type { MousePosition } from "../../../types";
 import type { Entity } from "../../../entities/entity";
 import type { ChipDefinition } from "../../../services/chip-library-service";
 import { SimActionType } from "@flux/shared-types";
-import { entityIdService } from "../../../entity-id-service";
 
 type SpawnChipToolArgs = ToolArgs & {
 	chipDefinition: ChipDefinition;
@@ -94,7 +93,7 @@ export class SpawnChipTool extends Tool {
 		this.sim.applyLocalAction({
 			kind: SimActionType.ChipSpawn,
 			chipDefinition: this.chipDefinition,
-			chipId: entityIdService.generateId(),
+			chipId: this.sim.entityIdService.generateId(),
 			position: ghostChip.renderState.position,
 		});
 
@@ -107,8 +106,6 @@ export class SpawnChipTool extends Tool {
 	}
 
 	private generateGhostId(): string {
-		// return `${this.userId}:${entityIdService.generateId()}`;
-		// TODO: use userId
-		return `ghost:${entityIdService.generateId()}`;
+		return `ghost:${this.sim.entityIdService.generateId()}`;
 	}
 }

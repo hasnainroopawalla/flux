@@ -206,7 +206,7 @@ export class LayoutManager {
 				camera: this.camera,
 				compositeId,
 			}),
-			4, // TODO: dont hardcode for multiple composite layers
+			4,
 		);
 
 		this.state = {
