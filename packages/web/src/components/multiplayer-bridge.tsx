@@ -1,9 +1,15 @@
 import * as React from "react";
 import { useRealtimeClient } from "../contexts/realtime-client-context";
-import { WsClientCommandType, WsServerEventType } from "@flux/shared-types";
+import {
+	type SimAction,
+	SimActionType,
+	WsClientCommandType,
+	WsServerEventType,
+} from "@flux/shared-types";
 import { useSimulatorApp } from "../contexts/simulator-app-context";
-import { useRoom } from "../contexts/room-context";
+import { type Room, useRoom } from "../contexts/room-context";
 import { SimEventSource } from "@flux/simulator";
+import { throttle } from "../utils";
 
 export const MultiplayerBridge: React.FC = () => {
 	const { realtimeClient } = useRealtimeClient();
@@ -11,6 +17,18 @@ export const MultiplayerBridge: React.FC = () => {
 	const simulatorApp = useSimulatorApp();
 
 	const { room } = useRoom();
+
+	const sendGhostMoveThrottled = React.useMemo(
+		() =>
+			throttle((action: SimAction, room: Room) => {
+				realtimeClient.sendClientCommand({
+					kind: WsClientCommandType.SimAction,
+					roomId: room.roomId,
+					action,
+				});
+			}, 100),
+		[realtimeClient],
+	);
 
 	React.useEffect(() => {
 		const disposeLocalSimEventSubscription = simulatorApp.sim.on(
@@ -20,11 +38,17 @@ export const MultiplayerBridge: React.FC = () => {
 					return;
 				}
 
-				realtimeClient.sendClientCommand({
-					kind: WsClientCommandType.SimAction,
-					roomId: room.roomId,
-					action,
-				});
+				switch (action.kind) {
+					case SimActionType.GhostChipMove:
+						sendGhostMoveThrottled(action, room);
+						break;
+					default:
+						realtimeClient.sendClientCommand({
+							kind: WsClientCommandType.SimAction,
+							roomId: room.roomId,
+							action,
+						});
+				}
 			},
 		);
 
@@ -39,7 +63,7 @@ export const MultiplayerBridge: React.FC = () => {
 			unsubscribe();
 			disposeLocalSimEventSubscription();
 		};
-	}, [realtimeClient, room, simulatorApp]);
+	}, [realtimeClient, room, simulatorApp, sendGhostMoveThrottled]);
 
 	return null;
 };

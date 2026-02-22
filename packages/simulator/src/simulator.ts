@@ -111,6 +111,7 @@ export class Simulator {
 				this.ghostChipManager.destroyChip(action.ghostChipId);
 				break;
 		}
+
 		this.emit("sim.action", { action, source });
 	}
 }

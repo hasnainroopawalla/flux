@@ -7,7 +7,7 @@ export enum ParticipantRole {
 	Member = "Member",
 }
 
-type Room = {
+export type Room = {
 	role: ParticipantRole;
 	roomId: string;
 };
