@@ -10,7 +10,7 @@ import type {
 	EntitySpawnOptions,
 } from "./chip.interface";
 import { type ChipLayout, ChipLayoutFactory } from "./chip-layout-factory";
-import type { ColorRGBA, Position } from "@digital-logic-sim/shared-types";
+import type { ColorRGBA, Position } from "@flux/shared-types";
 import { PinLengthMismatchError } from "../../errors";
 
 type ChipSpecOf<TChipType> = Extract<ChipSpec, { chipType: TChipType }>;

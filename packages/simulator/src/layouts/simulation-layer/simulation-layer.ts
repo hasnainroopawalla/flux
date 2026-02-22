@@ -1,7 +1,4 @@
-import {
-	RenderableType,
-	type Renderable,
-} from "@digital-logic-sim/render-engine";
+import { RenderableType, type Renderable } from "@flux/render-engine";
 import { BaseLayer } from "../base-layer";
 import {
 	ButtonEvent,
@@ -47,8 +44,12 @@ export class SimulationLayer extends BaseLayer<LayerType.Simulation> {
 				color: wire.getRenderState().color,
 			}));
 
+		const ghostChipRenderables: Renderable[] = this.sim.ghostChipManager
+			.getAll()
+			.map((ghostChip) => LayoutUtils.ghostChipToRenderable(ghostChip));
+
 		// TODO: [optimize] new object created each frame
-		return [...chipRenderables, ...wireRenderables];
+		return [...chipRenderables, ...wireRenderables, ...ghostChipRenderables];
 	}
 
 	public onMouseButtonEvent(

@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Settings } from "@digital-logic-sim/shared-types";
+import type { Settings } from "@flux/shared-types";
 import { useSimulatorApp } from "./simulator-app-context";
 
 type SettingsContextValue = {

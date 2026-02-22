@@ -3,7 +3,7 @@ import type { Simulator } from "../simulator";
 import threeAndBp from "../blueprints/3-and.json";
 import orUsingNandBp from "../blueprints/nand.json";
 import type { Blueprint } from "../services/blueprint-service";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { AtomicChipType, ChipType, IOChipType } from "../entities/chips";
 
 export const SCENARIOS = {

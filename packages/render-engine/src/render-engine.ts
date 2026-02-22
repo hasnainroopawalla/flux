@@ -21,7 +21,7 @@ import { ChipRenderer } from "./render-engine.chip";
 import { WireRenderer } from "./render-engine.wire";
 import { GridRenderer } from "./render-engine.grid";
 
-import type { Settings } from "@digital-logic-sim/shared-types";
+import type { Settings } from "@flux/shared-types";
 
 export type SettingsContext = { get: () => Settings };
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDialog } from "./dialog";
 import { useSettings } from "../contexts/settings-context";
-import type { Settings } from "@digital-logic-sim/shared-types";
+import type { Settings } from "@flux/shared-types";
 import { twMerge } from "tailwind-merge";
 
 export type SettingsDialogProps = object;

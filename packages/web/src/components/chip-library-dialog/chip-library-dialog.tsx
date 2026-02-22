@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDialog } from "../dialog";
 import { useSimulatorApp } from "../../contexts/simulator-app-context";
-import type { ChipDefinition } from "@digital-logic-sim/simulator";
+import type { ChipDefinition } from "@flux/simulator";
 
 export type ChipLibraryDialogProps = object;
 

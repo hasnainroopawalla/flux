@@ -1,20 +1,22 @@
 import type * as React from "react";
-import { SimulatorApp } from "@digital-logic-sim/simulator";
+import { SimulatorApp } from "@flux/simulator";
 import { useEffectOnce } from "../utils";
 
 type StartSimulatorActionProps = {
 	canvas: HTMLCanvasElement;
+	sessionId: string;
 	onSimulatorAppStartSuccess: (simulatorApp: SimulatorApp) => void;
 	onSimulatorAppStartFailure: (simulatorApp: SimulatorApp) => void;
 };
 
 export const StartSimulatorAction: React.FC<StartSimulatorActionProps> = ({
 	canvas,
+	sessionId,
 	onSimulatorAppStartSuccess,
 	onSimulatorAppStartFailure,
 }) => {
 	useEffectOnce(() => {
-		const simulatorApp = new SimulatorApp({ canvas });
+		const simulatorApp = new SimulatorApp({ canvas, sessionId });
 		simulatorApp
 			.start()
 			.then(() => {

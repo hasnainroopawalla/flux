@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { SimulatorApp } from "@digital-logic-sim/simulator";
+import type { SimulatorApp } from "@flux/simulator";
 
 type SimulatorAppContextValue = {
 	simulatorApp: SimulatorApp;

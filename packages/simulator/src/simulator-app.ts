@@ -1,4 +1,4 @@
-import { RenderEngine } from "@digital-logic-sim/render-engine";
+import { RenderEngine } from "@flux/render-engine";
 import { Simulator } from "./simulator";
 import { Clock } from "./clock";
 import { Camera } from "./camera";
@@ -15,7 +15,7 @@ import { InputManager } from "./managers/input-manager";
 import { MousePositionService } from "./services/mouse-position-service";
 import { SettingsService } from "./services/settings-service";
 
-type SimulatorAppArgs = { canvas: HTMLCanvasElement };
+type SimulatorAppArgs = { canvas: HTMLCanvasElement; sessionId: string };
 
 export class SimulatorApp {
 	public sim: Simulator;
@@ -46,7 +46,7 @@ export class SimulatorApp {
 
 		this.inputManager = new InputManager({ canvas: args.canvas });
 
-		this.sim = new Simulator();
+		this.sim = new Simulator(args.sessionId);
 
 		this.settingsService = new SettingsService(this.sim);
 

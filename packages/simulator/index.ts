@@ -2,6 +2,8 @@ export { SimulatorApp } from "./src/simulator-app"
 export { PinType } from "./src/entities/pin"
 export { ChipLabelUtils, ChipType } from "./src/entities/chips"
 export { EntityType } from "./src/entities/entity"
+export { SimEventSource } from "./src/services/eventing-service"
+
 export type { OverlayLabelData } from "./src/managers/overlay-manager"
 export type { Blueprint } from "./src/services/blueprint-service"
 export type { ChipDefinition } from "./src/services/chip-library-service"

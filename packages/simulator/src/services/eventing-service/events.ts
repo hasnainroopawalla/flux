@@ -1,4 +1,4 @@
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position, SimAction } from "@flux/shared-types";
 import type { ChipType } from "../../entities/chips";
 import type { Pin, PinType } from "../../entities/pin";
 import type { ChipDefinition } from "../chip-library-service";
@@ -19,7 +19,17 @@ export type IChipSpawnFinishEvent = {
 	pins: { id: string; name: string; pinType: PinType }[];
 };
 
+export enum SimEventSource {
+	Local = "Local",
+	Remote = "Remote",
+}
+
 export type IEvents = {
+	"sim.action": {
+		action: SimAction;
+		source: SimEventSource;
+	};
+
 	"sim.save-chip.start": { chipName: string };
 	"sim.save-chip.finish": undefined;
 
