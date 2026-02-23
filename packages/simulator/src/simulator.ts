@@ -59,11 +59,11 @@ export class Simulator {
 		this.eventingService.publish(event, data);
 	}
 
-	public applyLocalAction(action: SimAction) {
+	public applyLocalAction(action: SimAction): void {
 		this.applyAction(action, SimEventSource.Local);
 	}
 
-	public applyRemoteAction(action: SimAction) {
+	public applyRemoteAction(action: SimAction): void {
 		this.applyAction(action, SimEventSource.Remote);
 	}
 
@@ -87,7 +87,7 @@ export class Simulator {
 		}
 	}
 
-	private applyAction(action: SimAction, source: SimEventSource) {
+	private applyAction(action: SimAction, source: SimEventSource): void {
 		switch (action.kind) {
 			case SimActionType.ChipSpawn: {
 				this.chipManager.spawnChip(action.chipDefinition, {

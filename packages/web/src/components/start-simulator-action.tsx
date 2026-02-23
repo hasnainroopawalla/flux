@@ -16,7 +16,11 @@ export const StartSimulatorAction: React.FC<StartSimulatorActionProps> = ({
 	onSimulatorAppStartFailure,
 }) => {
 	useEffectOnce(() => {
-		const simulatorApp = new SimulatorApp({ canvas, sessionId });
+		const simulatorApp = new SimulatorApp({
+			canvas,
+			sessionId,
+			initialState: "",
+		});
 		simulatorApp
 			.start()
 			.then(() => {

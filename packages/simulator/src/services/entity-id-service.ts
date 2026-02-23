@@ -15,7 +15,7 @@ export class EntityIdService {
 		this.current = ENTITY_ID_START_INDEX;
 	}
 
-	public generateId(): string {
+	public next(): string {
 		this.current += 1;
 		return `${this.sessionId}:${this.current.toString()}`;
 	}

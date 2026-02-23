@@ -62,7 +62,7 @@ export class WireManager extends BaseManager {
 			opts,
 		});
 
-		const wireId = this.sim.entityIdService.generateId();
+		const wireId = this.sim.entityIdService.next();
 		wire.setId(wireId);
 
 		this.wires.push(wire);

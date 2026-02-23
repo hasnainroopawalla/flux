@@ -28,10 +28,6 @@ export class BlueprintService extends BaseService {
 	}
 
 	private init(): void {
-		this.sim.on("sim.save-chip.start", ({ chipName }) =>
-			this.saveBlueprint(chipName),
-		);
-
 		this.sim.on("sim.import-blueprint.start", ({ blueprintString }) =>
 			this.loadBlueprint(blueprintString),
 		);
@@ -55,7 +51,7 @@ export class BlueprintService extends BaseService {
 		return blueprintCopy;
 	}
 
-	private saveBlueprint(blueprintName: string): Blueprint {
+	public saveBlueprint(blueprintName: string): Blueprint {
 		const definitions: Blueprint["definitions"] = {};
 		const visited = new Set<string>();
 

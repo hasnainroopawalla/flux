@@ -93,7 +93,7 @@ export class SpawnChipTool extends Tool {
 		this.sim.applyLocalAction({
 			kind: SimActionType.ChipSpawn,
 			chipDefinition: this.chipDefinition,
-			chipId: this.sim.entityIdService.generateId(),
+			chipId: this.sim.entityIdService.next(),
 			position: ghostChip.renderState.position,
 		});
 
@@ -106,6 +106,6 @@ export class SpawnChipTool extends Tool {
 	}
 
 	private generateGhostId(): string {
-		return `ghost:${this.sim.entityIdService.generateId()}`;
+		return `ghost:${this.sim.entityIdService.next()}`;
 	}
 }

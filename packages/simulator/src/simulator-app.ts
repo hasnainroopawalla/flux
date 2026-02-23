@@ -14,13 +14,14 @@ import { InputManager } from "./managers/input-manager";
 // services
 import { MousePositionService } from "./services/mouse-position-service";
 import { SettingsService } from "./services/settings-service";
-
-type SimulatorAppArgs = { canvas: HTMLCanvasElement; sessionId: string };
+import { SaveLoadService } from "./save-load-service";
 
 export class SimulatorApp {
 	public sim: Simulator;
 	public overlayManager: OverlayManager;
+
 	public settingsService: SettingsService;
+	public saveLoadService: SaveLoadService;
 
 	private clock: Clock;
 
@@ -39,7 +40,11 @@ export class SimulatorApp {
 	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: <temporary component>
 	private scenarioLoader: ScenarioLoader;
 
-	constructor(args: SimulatorAppArgs) {
+	constructor(args: {
+		canvas: HTMLCanvasElement;
+		sessionId: string;
+		initialState: string;
+	}) {
 		this.clock = new Clock({ showFrameTime: false });
 
 		this.initializeCanvas(args.canvas);
@@ -47,6 +52,8 @@ export class SimulatorApp {
 		this.inputManager = new InputManager({ canvas: args.canvas });
 
 		this.sim = new Simulator(args.sessionId);
+
+		this.saveLoadService = new SaveLoadService(this.sim);
 
 		this.settingsService = new SettingsService(this.sim);
 
@@ -88,7 +95,10 @@ export class SimulatorApp {
 
 		this.init();
 
-		// setTimeout(() => this.scenarioLoader.load("OrUsingNand"), 1000);
+		setTimeout(() => {
+			this.scenarioLoader.load("OrUsingNand");
+			// this.saveLoadService.save();
+		}, 1000);
 	}
 
 	public async start(): Promise<void> {

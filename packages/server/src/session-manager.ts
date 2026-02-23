@@ -34,6 +34,6 @@ export class SessionManager {
 	}
 
 	private generateSessionId(): string {
-		return `session-${this.sessions.size}`;
+		return `s${this.sessions.size}`;
 	}
 }

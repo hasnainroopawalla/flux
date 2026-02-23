@@ -55,7 +55,7 @@ const ProjectToolbarItem: React.FC = () => {
 
 	const saveChip = React.useCallback(
 		(chipName: string) => {
-			simulatorApp.sim.emit("sim.save-chip.start", { chipName });
+			simulatorApp.sim.blueprintService.saveBlueprint(chipName);
 			setIsPopoverOpen(false);
 			closeDialog();
 		},

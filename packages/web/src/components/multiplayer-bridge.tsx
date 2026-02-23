@@ -26,7 +26,7 @@ export const MultiplayerBridge: React.FC = () => {
 					roomId: room.roomId,
 					action,
 				});
-			}, 100),
+			}, 30),
 		[realtimeClient],
 	);
 
@@ -52,7 +52,7 @@ export const MultiplayerBridge: React.FC = () => {
 			},
 		);
 
-		const unsubscribe = realtimeClient.on(
+		const disposeRemoteSimEventSubscription = realtimeClient.on(
 			WsServerEventType.SimAction,
 			({ action }) => {
 				simulatorApp.sim.applyRemoteAction(action);
@@ -60,7 +60,7 @@ export const MultiplayerBridge: React.FC = () => {
 		);
 
 		return () => {
-			unsubscribe();
+			disposeRemoteSimEventSubscription();
 			disposeLocalSimEventSubscription();
 		};
 	}, [realtimeClient, room, simulatorApp, sendGhostMoveThrottled]);
