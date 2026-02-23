@@ -1,7 +1,4 @@
-import {
-	RenderableType,
-	type Renderable,
-} from "@digital-logic-sim/render-engine";
+import { RenderableType, type Renderable } from "@flux/render-engine";
 import { Tool, type ToolArgs } from "./tool";
 import {
 	ButtonEvent,
@@ -11,7 +8,7 @@ import {
 import type { MousePosition } from "../../../types";
 import { EntityType, type Entity } from "../../../entities/entity";
 import type { Pin } from "../../../entities/pin";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { COLORS } from "../../../services/color-service";
 
 type WiringToolArgs = ToolArgs & {

@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { ChipLabelUtils } from "@digital-logic-sim/simulator";
+import { ChipLabelUtils } from "@flux/simulator";
 
 type ChipNameProps = {
 	id: string;

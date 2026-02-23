@@ -1,5 +1,5 @@
 {
-  "name": "@digital-logic-sim/shared-types",
+  "name": "@flux/shared-types",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

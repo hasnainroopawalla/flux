@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 
 export const useEffectOnce = (callback: () => () => void, predicate = true) => {
 	const hasRun = React.useRef(false);
@@ -91,3 +91,23 @@ export const useGetMousePosition = (): (() => Position) => {
 
 	return getMousePosition;
 };
+
+export function throttle<T extends unknown[]>(
+	callback: (...args: T) => void,
+	delay: number,
+) {
+	let isWaiting = false;
+
+	return (...args: T) => {
+		if (isWaiting) {
+			return;
+		}
+
+		callback(...args);
+		isWaiting = true;
+
+		setTimeout(() => {
+			isWaiting = false;
+		}, delay);
+	};
+}

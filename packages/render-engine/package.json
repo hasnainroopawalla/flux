@@ -1,5 +1,5 @@
 {
-  "name": "@digital-logic-sim/render-engine",
+  "name": "@flux/render-engine",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "@webgpu/types": "^0.1.66"
   },
   "dependencies": {
-    "@digital-logic-sim/shared-types": "workspace:^1.0.0",
+    "@flux/shared-types": "workspace:^1.0.0",
     "wgpu-matrix": "^3.4.0"
   }
 }

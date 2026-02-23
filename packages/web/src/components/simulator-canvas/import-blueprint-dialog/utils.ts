@@ -1,4 +1,4 @@
-import { ChipType, type Blueprint } from "@digital-logic-sim/simulator";
+import { ChipType, type Blueprint } from "@flux/simulator";
 import type { PreviewNode } from "./blueprint-preview-tree";
 
 export function blueprintStringToPreviewNode(

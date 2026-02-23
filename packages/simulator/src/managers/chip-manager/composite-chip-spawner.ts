@@ -111,6 +111,7 @@ export class CompositeChipSpawner {
 
 		Object.entries(chipMappings).forEach(
 			([_externalPinLabel, externalIOPort]) => {
+				// TODO: call applyLocalAction here
 				const ioChip = this.chipManager.spawnChip(
 					ioChipFactory,
 					{

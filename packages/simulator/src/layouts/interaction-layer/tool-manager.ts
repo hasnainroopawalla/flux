@@ -1,4 +1,4 @@
-import type { Renderable } from "@digital-logic-sim/render-engine";
+import type { Renderable } from "@flux/render-engine";
 import { SpawnChipTool, WiringTool, type Tool } from "./tools";
 import type { Simulator } from "../../simulator";
 import type {
@@ -98,9 +98,7 @@ export class ToolManager {
 
 	private init(): void {
 		this.sim.on("chip.spawn.start", ({ chipDefinition }) => {
-			const chipFactory =
-				this.sim.chipLibraryService.getChipFactory(chipDefinition);
-			this.setActiveTool(SpawnChipTool, { chipFactory });
+			this.setActiveTool(SpawnChipTool, { chipDefinition });
 		});
 
 		this.sim.on("wire.spawn.start", ({ startPin }) =>

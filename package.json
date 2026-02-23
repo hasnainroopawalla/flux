@@ -5,9 +5,12 @@
   "description": "Digital Logic Gate Simulator using React and WebGPU",
   "main": "index.js",
   "scripts": {
-    "start": "pnpm --filter @digital-logic-sim/web start",
-    "preview": "pnpm --filter @digital-logic-sim/web preview",
-    "build": "pnpm --filter @digital-logic-sim/web build --emptyOutDir",
+    "start": "concurrently \"pnpm start:server:watch\" \"pnpm start:client\"",
+    "start:client": "pnpm --filter @flux/web start",
+    "start:server": "pnpm --filter @flux/server start",
+    "start:server:watch": "pnpm --filter @flux/server start:watch",
+    "preview": "pnpm --filter @flux/web preview",
+    "build": "pnpm --filter @flux/web build --emptyOutDir",
     "test:unit": "pnpm -r run test",
     "test": "pnpm -r test",
     "lint": "biome check && tsc -p tsconfig.json --noEmit",
@@ -20,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
     "@types/jest": "^30.0.0",
+    "concurrently": "^9.2.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   }

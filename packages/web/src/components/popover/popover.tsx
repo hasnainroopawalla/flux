@@ -5,7 +5,7 @@ import {
 	ChipType,
 	EntityType,
 	type IEntitySecondaryActionEvent,
-} from "@digital-logic-sim/simulator";
+} from "@flux/simulator";
 import { ActionMenu, type ActionMenuItem } from "./action-menu";
 import { type ActionContext, ENTITY_ACTIONS } from "./actions";
 

@@ -1,4 +1,4 @@
-import { PinType } from "@digital-logic-sim/simulator";
+import { PinType } from "@flux/simulator";
 import type * as React from "react";
 import { twMerge } from "tailwind-merge";
 

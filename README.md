@@ -1,4 +1,4 @@
-# ⚡️ Flux
+# ⚡️ flux
 
 A fast, playful digital-circuit sandbox.
 

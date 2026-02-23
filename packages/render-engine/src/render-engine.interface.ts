@@ -1,8 +1,4 @@
-import type {
-	ColorRGBA,
-	Position,
-	RectDimension,
-} from "@digital-logic-sim/shared-types";
+import type { ColorRGBA, Position, RectDimension } from "@flux/shared-types";
 
 export enum ChipRenderableType {
 	Rect = "Rect",

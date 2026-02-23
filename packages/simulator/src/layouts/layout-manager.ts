@@ -1,6 +1,6 @@
 import { InteractionLayer } from "./interaction-layer";
 import { SimulationLayer } from "./simulation-layer";
-import type { Renderable } from "@digital-logic-sim/render-engine";
+import type { Renderable } from "@flux/render-engine";
 import type {
 	MouseButtonType,
 	ButtonEvent,
@@ -13,7 +13,7 @@ import type { Camera } from "../camera";
 import type { MousePositionService } from "../services/mouse-position-service";
 import { CompositeLayer } from "./composite-layer";
 import type { Simulator } from "../simulator";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { OverlayLayer } from "./overlay-layer";
 import { LayerType } from "./layout.interface";
 import { LayerUtils } from "./layer.utils";
@@ -206,7 +206,7 @@ export class LayoutManager {
 				camera: this.camera,
 				compositeId,
 			}),
-			4, // TODO: dont hardcode for multiple composite layers
+			4,
 		);
 
 		this.state = {

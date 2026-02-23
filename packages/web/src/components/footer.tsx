@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
 				>
 					<GitHubIcon />
 				</a>
-				<span className="text-[10px] text-white/40">Flux v{APP_VERSION}</span>
+				<span className="text-[10px] text-white/40">flux v{APP_VERSION}</span>
 			</div>
 		</div>
 	);

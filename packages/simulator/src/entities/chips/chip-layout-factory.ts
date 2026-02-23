@@ -1,4 +1,4 @@
-import { renderEngineConfig } from "@digital-logic-sim/render-engine";
+import { renderEngineConfig } from "@flux/render-engine";
 import { PinType } from "../pin";
 import { ChipType, type Chip } from "./chip.interface";
 import {
@@ -7,7 +7,7 @@ import {
 	type ChipMetadata,
 	ChipUtils,
 } from "./chip.utils";
-import type { RectDimension, Position } from "@digital-logic-sim/shared-types";
+import type { RectDimension, Position } from "@flux/shared-types";
 
 const chipLayoutConfig = {
 	aspectRatio: 1.5,

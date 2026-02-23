@@ -1,4 +1,4 @@
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import {
 	type MouseButtonType,
 	type MouseScrollType,

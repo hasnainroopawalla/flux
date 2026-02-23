@@ -1,5 +1,5 @@
-import { renderEngineConfig } from "@digital-logic-sim/render-engine";
-import type { Position, RectDimension } from "@digital-logic-sim/shared-types";
+import { renderEngineConfig } from "@flux/render-engine";
+import type { Position, RectDimension } from "@flux/shared-types";
 import type { ChipType } from "./chip.interface";
 
 export type ChipMetadata = {

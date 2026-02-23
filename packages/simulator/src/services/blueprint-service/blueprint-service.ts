@@ -17,7 +17,7 @@ import type { Wire } from "../../entities/wire";
 import type { Simulator } from "../../simulator";
 import { BaseService } from "../base-service";
 import { InvalidWireConnectionError } from "../../errors";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { round2 } from "../../utils";
 
 export class BlueprintService extends BaseService {
@@ -28,10 +28,6 @@ export class BlueprintService extends BaseService {
 	}
 
 	private init(): void {
-		this.sim.on("sim.save-chip.start", ({ chipName }) =>
-			this.saveBlueprint(chipName),
-		);
-
 		this.sim.on("sim.import-blueprint.start", ({ blueprintString }) =>
 			this.loadBlueprint(blueprintString),
 		);
@@ -55,7 +51,7 @@ export class BlueprintService extends BaseService {
 		return blueprintCopy;
 	}
 
-	private saveBlueprint(blueprintName: string): Blueprint {
+	public saveBlueprint(blueprintName: string): Blueprint {
 		const definitions: Blueprint["definitions"] = {};
 		const visited = new Set<string>();
 

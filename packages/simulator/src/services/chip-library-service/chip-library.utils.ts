@@ -8,7 +8,11 @@ import {
 	ChipType,
 } from "../../entities/chips";
 import type { AtomicChipFactory, IOChipFactory } from "./builtin-registry";
-import type { ChipFactory } from "./chip-library-service";
+import type {
+	ChipDefinition,
+	ChipFactory,
+	ChipRegistryMap,
+} from "./chip-library-service";
 import type { CompositeChipFactory } from "./composite-registry";
 
 export type ChipFromFactory<T extends ChipFactory> = T extends AtomicChipFactory
@@ -18,6 +22,10 @@ export type ChipFromFactory<T extends ChipFactory> = T extends AtomicChipFactory
 		: T extends CompositeChipFactory
 			? CompositeChip
 			: never;
+
+export type ChipFromDefinition<D extends ChipDefinition> = ChipFromFactory<
+	ChipRegistryMap[D["kind"]]["resolved"]
+>;
 
 export type ChipSpecFromFactory<T extends ChipFactory> =
 	T extends AtomicChipFactory

@@ -1,6 +1,6 @@
 import { ToolManager } from "./tool-manager";
 import { BaseLayer } from "../base-layer";
-import type { Renderable } from "@digital-logic-sim/render-engine";
+import type { Renderable } from "@flux/render-engine";
 import type {
 	MouseButtonType,
 	ButtonEvent,

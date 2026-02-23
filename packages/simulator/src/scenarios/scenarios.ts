@@ -3,50 +3,65 @@ import type { Simulator } from "../simulator";
 import threeAndBp from "../blueprints/3-and.json";
 import orUsingNandBp from "../blueprints/nand.json";
 import type { Blueprint } from "../services/blueprint-service";
-import type { Position } from "@digital-logic-sim/shared-types";
+import type { Position } from "@flux/shared-types";
 import { AtomicChipType, ChipType, IOChipType } from "../entities/chips";
 
 export const SCENARIOS = {
 	Nand: (sim: Simulator) => {
-		const andChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.Atomic,
-			name: AtomicChipType.And,
-		});
+		const inputChip0 = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Input,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: 1.6, y: 1.3 },
+			},
+		);
 
-		const notChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.Atomic,
-			name: AtomicChipType.Not,
-		});
+		const inputChip1 = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Input,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: 1.6, y: 0.8 },
+			},
+		);
 
-		const inputChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.IO,
-			name: IOChipType.Input,
-		});
+		const andChip = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.Atomic,
+				name: AtomicChipType.And,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: 0.3, y: 1 },
+			},
+		);
 
-		const outputChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.IO,
-			name: IOChipType.Output,
-		});
+		const notChip = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.Atomic,
+				name: AtomicChipType.Not,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: -1, y: 1 },
+			},
+		);
 
-		const inputChip0 = sim.chipManager.spawnChip(inputChipFactory, {
-			position: { x: 1.6, y: 1.3 },
-		});
-
-		const inputChip1 = sim.chipManager.spawnChip(inputChipFactory, {
-			position: { x: 1.6, y: 0.8 },
-		});
-
-		const andChip = sim.chipManager.spawnChip(andChipFactory, {
-			position: { x: 0.3, y: 1 },
-		});
-
-		const notChip = sim.chipManager.spawnChip(notChipFactory, {
-			position: { x: -1, y: 1 },
-		});
-
-		const outputChip = sim.chipManager.spawnChip(outputChipFactory, {
-			position: { x: -2, y: 1 },
-		});
+		const outputChip = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Output,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: -2, y: 1 },
+			},
+		);
 
 		sim.wireManager.spawnWire(
 			{
@@ -91,31 +106,34 @@ export const SCENARIOS = {
 
 	ChipGallery: (sim: Simulator) => {
 		sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Atomic,
 				name: AtomicChipType.And,
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: 4, y: 2 },
 			},
 		);
 
 		sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Atomic,
 				name: AtomicChipType.Or,
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: 3, y: 2 },
 			},
 		);
 
 		sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Atomic,
 				name: AtomicChipType.Not,
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: 2, y: 2 },
 			},
 		);
@@ -145,58 +163,72 @@ export const SCENARIOS = {
 	},
 
 	OrUsingNand: (sim: Simulator) => {
-		const inputChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.IO,
-			name: IOChipType.Input,
-		});
+		const inputChip0 = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Input,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: 2.5, y: 1 },
+			},
+		);
 
-		const outputChipFactory = sim.chipLibraryService.getChipFactory({
-			kind: ChipType.IO,
-			name: IOChipType.Output,
-		});
+		const inputChip1 = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Input,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: 2.5, y: 0 },
+			},
+		);
 
-		const inputChip0 = sim.chipManager.spawnChip(inputChipFactory, {
-			position: { x: 2.5, y: 1 },
-		});
-
-		const inputChip1 = sim.chipManager.spawnChip(inputChipFactory, {
-			position: { x: 2.5, y: 0 },
-		});
-
-		const outputChip1 = sim.chipManager.spawnChip(outputChipFactory, {
-			position: { x: -2, y: 0.5 },
-		});
+		const outputChip1 = sim.chipManager.spawnChip(
+			{
+				kind: ChipType.IO,
+				name: IOChipType.Output,
+			},
+			{
+				chipId: sim.entityIdService.next(),
+				position: { x: -2, y: 0.5 },
+			},
+		);
 
 		sim.blueprintService.loadBlueprint(
 			JSON.stringify(orUsingNandBp as Blueprint),
 		);
 
 		const nand1 = sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Composite,
 				name: "NAND",
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: 1, y: 1 },
 			},
 		);
 
 		const nand2 = sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Composite,
 				name: "NAND",
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: 1, y: 0 },
 			},
 		);
 
 		const nand3 = sim.chipManager.spawnChip(
-			sim.chipLibraryService.getChipFactory({
+			{
 				kind: ChipType.Composite,
 				name: "NAND",
-			}),
+			},
 			{
+				chipId: sim.entityIdService.next(),
 				position: { x: -0.5, y: 0.5 },
 			},
 		);
@@ -281,11 +313,12 @@ function loadAndSpawnCompositeChip(
 	sim.blueprintService.loadBlueprint(JSON.stringify(blueprint));
 
 	sim.chipManager.spawnChip(
-		sim.chipLibraryService.getChipFactory({
+		{
 			kind: ChipType.Composite,
 			name: blueprint.root,
-		}),
+		},
 		{
+			chipId: sim.entityIdService.next(),
 			position,
 		},
 	);

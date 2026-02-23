@@ -1,7 +1,7 @@
 import type {
 	IEntitySecondaryActionEvent,
 	SimulatorApp,
-} from "@digital-logic-sim/simulator";
+} from "@flux/simulator";
 import type { ActionMenuItem } from "./action-menu";
 
 export type ActionContext = {

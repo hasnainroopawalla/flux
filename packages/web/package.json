@@ -1,5 +1,5 @@
 {
-  "name": "@digital-logic-sim/web",
+  "name": "@flux/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,11 +10,12 @@
     "test": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@digital-logic-sim/shared-types": "workspace:^1.0.0",
-    "@digital-logic-sim/simulator": "workspace:^1.0.0",
+    "@flux/shared-types": "workspace:^1.0.0",
+    "@flux/simulator": "workspace:^1.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.1.16",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.16",
@@ -24,6 +25,7 @@
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^5.1.0",
     "globals": "^16.4.0",
     "identity-obj-proxy": "^3.0.0",

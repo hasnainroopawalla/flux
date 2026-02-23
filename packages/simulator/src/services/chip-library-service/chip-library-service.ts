@@ -15,7 +15,7 @@ import {
 	CompositeChipRegistry,
 } from "./composite-registry";
 
-type ChipRegistryMap = {
+export type ChipRegistryMap = {
 	[ChipType.Atomic]: {
 		name: AtomicChipType;
 		resolved: AtomicChipFactory;

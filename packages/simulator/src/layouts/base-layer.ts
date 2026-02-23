@@ -1,4 +1,4 @@
-import type { Renderable } from "@digital-logic-sim/render-engine";
+import type { Renderable } from "@flux/render-engine";
 import type { Simulator } from "../simulator";
 import type {
 	ButtonEvent,

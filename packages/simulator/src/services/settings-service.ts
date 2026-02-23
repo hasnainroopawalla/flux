@@ -1,4 +1,4 @@
-import type { Settings } from "@digital-logic-sim/shared-types";
+import type { Settings } from "@flux/shared-types";
 import type { Simulator } from "../simulator";
 import { BaseService } from "./base-service";
 
